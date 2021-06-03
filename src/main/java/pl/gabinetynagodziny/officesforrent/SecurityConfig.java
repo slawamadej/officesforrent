@@ -40,8 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()//jaka metoda wolna od uwierzytelniania
+                .antMatchers("/offices").permitAll()
                 .antMatchers("/offices/*").permitAll()
-                .antMatchers("/addoffice").permitAll()
+                .antMatchers("/details").permitAll()
+                .antMatchers("/details/*").permitAll()
                 .antMatchers("/sign_up").permitAll()
                 .antMatchers("/confirm_email").permitAll()
                 .antMatchers("/css/**").permitAll()

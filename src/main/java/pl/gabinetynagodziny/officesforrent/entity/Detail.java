@@ -21,7 +21,7 @@ public class Detail {
     private Long detailId;
 
     private String detailType; //TYPE or DETAIL ??? nie musi byc, ale w sumie by sie przydalo//ograniczenie na type np FURNISHINGS, PURPOSE
-    private String language;
+    //private String language;
     private String code;
     private String description;
 

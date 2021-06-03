@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gabinety do wynajecia</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<tr th:each="detail: ${details}" th:href="@{'/details'+${detail.detailId}}">
+    <td th:text="${detail.detailType}"/>
+    <td th:text="${detail.code}"/>
+    <td th:text="${detail.description}"/>
+</tr>
+</body>
+</html>

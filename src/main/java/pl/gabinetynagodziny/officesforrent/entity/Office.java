@@ -30,6 +30,8 @@ public class Office {
     private Integer capacity;
     private Float area;
 
+    //https://www.codejava.net/frameworks/spring-boot/spring-boot-file-upload-tutorial
+
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="userId", insertable = false, updatable = false)
     private Unit unit;

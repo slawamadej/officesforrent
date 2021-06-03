@@ -1,0 +1,10 @@
+tr{
+    display: block;
+    padding: 10px;
+    border: black 10px solid;
+    margin-bottom: 10px;
+}
+td {
+    padding: 10px;
+    border: black 10px solid;
+}

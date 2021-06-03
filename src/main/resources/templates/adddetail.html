@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+<form action="/details/add" th:object="${detail}" method="POST">
+    <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+
+    <div >
+        <input  type="text" th:field="*{detailType}" placeholder="Detail Type">
+        <div th:if="${#fields.hasErrors('detailType')}" th:errors="*{detailType}"></div>
+    </div>
+    <div >
+        <input  type="text" th:field="*{code}" placeholder="Detail code">
+        <div th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+    </div>
+    <div >
+        <input  type="text" th:field="*{description}" placeholder="Description">
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+
+    <input type="submit" value = "Save detail">
+</form>
+
+</body>
+</html>
