@@ -15,11 +15,10 @@ public class SignUpServiceImpl implements SignUpService {
 
     private static final int TOKEN_LENGTH = 15;
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private SignUpMailer signUpMailer;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SignUpMailer signUpMailer;
 
-    @Autowired
     public SignUpServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, SignUpMailer signUpMailer){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

@@ -21,7 +21,7 @@ public class User implements UserDetails {
     //otwarte jest na dodawanie swoich pol itd
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
    // @NotEmpty(message = "User's username cannot be empty.")

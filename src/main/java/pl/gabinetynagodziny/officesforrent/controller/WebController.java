@@ -1,6 +1,7 @@
 package pl.gabinetynagodziny.officesforrent.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,10 +29,5 @@ public class WebController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/offices", method=RequestMethod.GET)
-    public ModelAndView offices(ModelAndView modelAndView){
-        //ModelAndView mozemy nazwe widoku jak i obiekty, ktore chcemy przekazac
-        modelAndView.setViewName("offices");
-        return modelAndView;
-    }
+
 }

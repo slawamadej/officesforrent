@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import pl.gabinetynagodziny.officesforrent.provider.CustomDaoAuthenticationProvider;
 import pl.gabinetynagodziny.officesforrent.service.impl.JpaUserDetailsService;
 
@@ -17,13 +18,15 @@ import pl.gabinetynagodziny.officesforrent.service.impl.JpaUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     JpaUserDetailsService userDetailsService;
+    private final AuthSuccessHandler authSuccessHandler;
 
     @Autowired
     CustomDaoAuthenticationProvider authenticationProvider;
 
     @Autowired
-    public SecurityConfig(JpaUserDetailsService userDetailsService){
+    public SecurityConfig(JpaUserDetailsService userDetailsService, AuthSuccessHandler authSuccessHandler){
         this.userDetailsService = userDetailsService;
+        this.authSuccessHandler = authSuccessHandler;
     }
 
     @Override
@@ -37,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()//jaka metoda wolna od uwierzytelniania
-                .antMatchers("/offices").permitAll()
+                .antMatchers("/offices/*").permitAll()
+                .antMatchers("/addoffice").permitAll()
                 .antMatchers("/sign_up").permitAll()
                 .antMatchers("/confirm_email").permitAll()
                 .antMatchers("/css/**").permitAll()
@@ -48,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 //.usernameParameter("username")
                 //.passwordParameter("password")
-                .defaultSuccessUrl("/user_panel", false)
+                .successHandler(this.authSuccessHandler)
+                .defaultSuccessUrl("/user_panel", true)
                 //TRUE- zawsze przekierowanie na ten url
                 //a jak false na ten zasob co wczesniej klikalo
                 .and()

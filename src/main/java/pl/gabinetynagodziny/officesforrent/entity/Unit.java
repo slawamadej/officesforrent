@@ -21,7 +21,7 @@ import java.util.List;
 public class Unit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long unitId;
 
     //  @OneToOne(cascade = CascadeType.MERGE)
@@ -46,7 +46,7 @@ public class Unit {
    // private User user;
 
     @OneToMany
-    @JoinColumn(name="unitId")
+    @JoinColumn(name="userId")
     private List<Office> offices;
 
    // public void addOffice(Office office){

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Gabinety do wynajecia</title>
 </head>
 <body>
-Gabinety do wynajecia
+<tr th:each="office: ${offices}">
+    <td th:text="${office.name}"/>
+    <td th:text="${office.capacity}"/>
+    <td th:text="${office.area}"/>
+</tr>
 </body>
 </html>

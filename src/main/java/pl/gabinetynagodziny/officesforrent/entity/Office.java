@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +19,23 @@ import java.util.List;
 public class Office {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long officeId;
 
-    private Long unitId;
+    private Long userId;
 
+    @NotNull(message="Nie moze  puste")
     private String name;
+
     private Integer capacity;
     private Float area;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name="unitId", insertable = false, updatable = false)
+    @JoinColumn(name="userId", insertable = false, updatable = false)
     private Unit unit;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "officeDetails", joinColumns = @JoinColumn(name = "officeId"), inverseJoinColumns = @JoinColumn(name = "detailId"))
     private List<Detail> details;
-
 
 }

@@ -7,17 +7,23 @@
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<form th:action="addoffice"  method="POST">
+<form action="/offices/add" th:object="${office}" method="POST">
     <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
-    private String name;
-    private Integer capacity;
-    private Float area;
 
-    <input type ="text" name="name" placeholder="Office name">
-    <input type="number" name="capacity" placeholder="Capacity- how many people">
-    <input type="number" name="area" placeholder="Area">
+    <div >
+        <input  type="text" th:field="*{name}" placeholder="Office name">
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+    <div >
+        <input  type="number" th:field="*{capacity}" placeholder="Office capacity">
+        <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
+    </div>
+    <div >
+        <input  type="number" th:field="*{area}" placeholder="Office area">
+        <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
+    </div>
 
-    <select th:field="*{countryId}">
+    <!--     <select th:field="*{countryId}">
         <option value=""> -- </option>
         <option th:each="country : ${countries}"
                 th:value="${country.countryId}"
@@ -25,31 +31,13 @@
     </select>
 
 
-    <input type="radio" id="person" name="type" checked>
-    <label for="person">Person</label>
-    <input type="radio" id="company" name="type">
-    <label for="company">Company</label>
 
-
-    <!--   <label>First Name</label>
+  <label>First Name</label>
    <div th:classappend="${#fields.hasErrors('firstName')} ? 'input-icon right' : ''">
        <i th:if="${#fields.hasErrors('firstName')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
        <input type="text" class="form-control" maxlength="32" th:field="*{firstName}" placeholder="First name"/>
        <span th:if="${#fields.hasErrors('firstName')}" class="help-block" th:errors="*{firstName}"></span>
    </div>-->
-
-
-    <input type="text" name="firstName" placeholder="Firstname">
-    <input type="text" name="name" placeholder="Name">
-
-    <input type="text" name="webPage" placeholder="Web page">
-    <input type="email" name="email" placeholder="Email">
-
-    <input type="text" name="phoneNumber" placeholder="Phone Number">
-    <input type="text" name="taxNumber" placeholder="Tax Number">
-
-    <input type="checkbox" id="consent" name="consent" checked>
-    <label for="consent">Consent agreement</label>
 
     <input type="submit" value = "Save office">
 </form>

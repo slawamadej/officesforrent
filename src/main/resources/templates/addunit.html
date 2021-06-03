@@ -7,7 +7,7 @@
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<form action="/addunit"  method="POST">
+<form action="/units/add"  method="POST">
     <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
     <input type="radio" id="person" name="type" checked>
     <label for="person">Person</label>
