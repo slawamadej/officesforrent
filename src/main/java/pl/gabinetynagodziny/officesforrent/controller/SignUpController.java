@@ -37,8 +37,8 @@ public class SignUpController {
         return modelAndView;
     }
 
-    @GetMapping("/confirm_email")
     @ResponseBody
+    @GetMapping("/confirm_email")
     public String confirmEmail(String token){
         Optional<User> optionalUser = userRepository.findByToken(token);
 
@@ -46,7 +46,7 @@ public class SignUpController {
             return "nie ma tokenu";
         }
         User user = optionalUser.get();
-        user.setIsEnabled("Y");
+        user.setEnabled(true);
         userRepository.save(user);
         return "Konto aktywowane";
     }

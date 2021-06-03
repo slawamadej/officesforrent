@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+<form action="/addunit"  method="POST">
+    <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+    <input type="radio" id="person" name="type" checked>
+    <label for="person">Person</label>
+    <input type="radio" id="company" name="type">
+    <label for="company">Company</label>
+
+
+    <!--   <label>First Name</label>
+   <div th:classappend="${#fields.hasErrors('firstName')} ? 'input-icon right' : ''">
+       <i th:if="${#fields.hasErrors('firstName')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
+       <input type="text" class="form-control" maxlength="32" th:field="*{firstName}" placeholder="First name"/>
+       <span th:if="${#fields.hasErrors('firstName')}" class="help-block" th:errors="*{firstName}"></span>
+   </div>-->
+
+
+    <input type="text" name="firstName" placeholder="Firstname">
+    <input type="text" name="name" placeholder="Name">
+
+    <input type="text" name="webPage" placeholder="Web page">
+    <input type="email" name="email" placeholder="Email">
+
+    <input type="text" name="phoneNumber" placeholder="Phone Number">
+    <input type="text" name="taxNumber" placeholder="Tax Number">
+
+    <input type="checkbox" id="consent" name="consent" checked>
+    <label for="consent">Consent agreement</label>
+
+    <input type="submit" value = "Save profile">
+</form>
+
+</body>
+</html>

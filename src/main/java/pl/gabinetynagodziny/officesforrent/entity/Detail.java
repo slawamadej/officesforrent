@@ -1,19 +1,35 @@
 package pl.gabinetynagodziny.officesforrent.entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "details")
 public class Detail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="detailid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long detailId;
 
-    @Column(name="detailtype")
-    private String detailType; //ograniczenie na type np FURNISHINGS, PURPOSE
-    private String detail;
+    private String detailType; //TYPE or DETAIL ??? nie musi byc, ale w sumie by sie przydalo//ograniczenie na type np FURNISHINGS, PURPOSE
+    private String language;
+    private String code;
+    private String description;
+
+    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "officeDetails", joinColumns = @JoinColumn(name = "detailId"), inverseJoinColumns = @JoinColumn(name = "officeId"))
+    private List<Office> offices;
+
+
 
     //i moze tutaj powinnm dodac obiekt office, tak zeby uzyskac to polaczenie jak w officedetail
     //private Office office

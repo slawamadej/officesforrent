@@ -6,6 +6,8 @@
 
 --CREATE SCHEMA officeForRent;
 
+--$2a$10$eIfKiHwinw1D67kLyuxbX.NAzyz0UHaI/hBlPI2z/GN6tZHO6Zscy
+
 CREATE TABLE officeForRent.users(
      userId INT UNSIGNED AUTO_INCREMENT
     ,username VARCHAR(100) UNIQUE NOT NULL

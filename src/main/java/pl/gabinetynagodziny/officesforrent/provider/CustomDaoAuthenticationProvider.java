@@ -1,4 +1,4 @@
-package pl.gabinetynagodziny.officesforrent.component;
+package pl.gabinetynagodziny.officesforrent.provider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import javax.security.auth.login.AccountNotFoundException;
+import java.nio.file.AccessDeniedException;
 
 @Component
 public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
@@ -44,7 +47,13 @@ public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
         String password = credentials.toString();
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        System.out.println("Takie haslo w BAZIE" + userDetails.getPassword());
+
+        System.out.println("czy konto jest dostepne: " + userDetails.isEnabled());
+
+        if(!(userDetails.isEnabled())){
+            //rzucic jakis inny rodzaj bledu
+            throw new BadCredentialsException(INCORRECT_PASSWORD);
+            }
 
         //docelowo password encoder
         if(!passwordEncoder.matches(password,userDetails.getPassword())){

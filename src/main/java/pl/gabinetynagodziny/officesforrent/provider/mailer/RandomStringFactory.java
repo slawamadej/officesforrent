@@ -1,4 +1,4 @@
-package pl.gabinetynagodziny.officesforrent.component.mailer;
+package pl.gabinetynagodziny.officesforrent.provider.mailer;
 
 import org.springframework.stereotype.Component;
 

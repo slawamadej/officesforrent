@@ -1,4 +1,4 @@
-package pl.gabinetynagodziny.officesforrent.component.mailer;
+package pl.gabinetynagodziny.officesforrent.provider.mailer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
