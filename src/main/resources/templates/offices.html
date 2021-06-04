@@ -5,9 +5,12 @@
     <title>Gabinety do wynajecia</title>
 </head>
 <body>
+<div th:insert="menu.html :: div"></div>
+<div th:insert="search.html :: div"></div>
 <tr th:each="office: ${offices}">
     <td th:number="${office.officeId}"/>
     <td th:text="${office.name}"/>
+    <td th:text="${office.price}"/>
     <td th:text="${office.capacity}"/>
     <td th:text="${office.area}"/>
 </tr>

@@ -2,6 +2,7 @@ package pl.gabinetynagodziny.officesforrent.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.gabinetynagodziny.officesforrent.entity.User;
@@ -28,13 +29,12 @@ public class SignUpController {
         return modelAndView;
     }
 
-    @ResponseBody
     @PostMapping("/sign_up")
-    public ModelAndView signUpPost(ModelAndView modelAndView, String username, String password, String email){
+    public String signUpPost(Model model, String username, String password, String email){
         User userToSignUp = new User(username, password, email);
         signUpService.signUpUser(userToSignUp);
-        modelAndView.setViewName("redirect:/login");
-        return modelAndView;
+        model.addAttribute("signUpRedirect",true);
+        return "login";
     }
 
     @ResponseBody

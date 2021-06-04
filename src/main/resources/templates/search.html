@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div class="search">
+    <form action="offices/search" method="GET">
+        <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+        <input type="number" name="priceMin" placeholder="Min Price">
+        <input type="number" name="priceMax" placeholder="Max Price">
+        <input type="number" name="capacityMin" placeholder="Min Capacity">
+        <input type="number" name="area" placeholder="Area">
+        <div th:object="${furnishings}">
+            <select  name="furnishings">
+                <option value="">Select Furnishing</option>
+                <option th:each="furnishing : ${furnishings}"
+                        th:value="${furnishing.detailId}"
+                        th:text="${furnishing.code}+' : '+${furnishing.description}"></option>
+            </select>
+        </div>
+        <div  th:object="${purposes}">
+            <select name="purposes">
+                <option value="">Select Purposes</option>
+                <option th:each="purpose : ${purposes}"
+                        th:value="${purpose.detailId}"
+                        th:text="${purpose.code}+' : '+${purpose.description}"></option>
+            </select>
+        </div>
+
+        <input type="submit" value = "Search">
+    </form>
+
+</div>

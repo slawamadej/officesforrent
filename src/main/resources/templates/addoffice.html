@@ -19,6 +19,10 @@
         <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
     </div>
     <div >
+        <input  type="number" th:field="*{price}" placeholder="Office price">
+        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+    </div>
+    <div >
         <input  type="number" th:field="*{area}" placeholder="Office area">
         <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
     </div>

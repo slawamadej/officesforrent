@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<!--<html xmlns:th="http://ww.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Logowanie</title>
 </head>
 <body>
+<div>
+    <p th:if="${signUpRedirect} == true">Confirm e-mail and log in</p>
+</div>
 <div>
     <form action="/login" method="POST">
        <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->

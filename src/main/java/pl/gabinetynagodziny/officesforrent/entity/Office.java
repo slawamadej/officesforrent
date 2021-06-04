@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Office {
     @NotNull(message="Nie moze  puste")
     private String name;
 
+    @NotNull
+    private BigDecimal price;
+    @NotNull
     private Integer capacity;
     private Float area;
 

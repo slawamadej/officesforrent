@@ -1,3 +1,16 @@
+form{
+    display: flex;
+    height: auto;
+    flex-direction: column;
+}
+
+input{
+    margin: auto;
+    max-width: 400px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 tr{
     display: block;
     padding: 10px;
