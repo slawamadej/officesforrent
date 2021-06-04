@@ -2,17 +2,21 @@ package pl.gabinetynagodziny.officesforrent.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.gabinetynagodziny.officesforrent.entity.Detail;
 import pl.gabinetynagodziny.officesforrent.entity.Office;
 import pl.gabinetynagodziny.officesforrent.repository.OfficeRepository;
 import pl.gabinetynagodziny.officesforrent.service.DetailService;
 import pl.gabinetynagodziny.officesforrent.service.OfficeService;
+import pl.gabinetynagodziny.officesforrent.util.FileUploadUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,10 +62,15 @@ public class OfficeController {
     }
 
     @PostMapping("/add")
-    public String addOfficePost(@Valid Office office, BindingResult result, Model model, HttpSession httpSession){
+    public String addOfficePost(@Valid Office office, BindingResult result, Model model, HttpSession httpSession
+    ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
         if(result.hasErrors()){
             return "addoffice";
         }
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        System.out.println("Zdjecie nazwa: "+fileName);
+        office.setPhotos(fileName);
 
         Long sessionUserId = (Long) httpSession.getAttribute("userId");
         office.setUserId(sessionUserId);
@@ -69,6 +78,10 @@ public class OfficeController {
         System.out.println("office/add sessionUserId: " + sessionUserId);
 
         Office officeSaved = officeService.mergeOffice(office);
+
+        String uploadDir = "user-photos/" + officeSaved.getOfficeId();
+        System.out.println("uploadDir" + uploadDir);
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "redirect:/offices/"+ officeSaved.getOfficeId();
     }
 

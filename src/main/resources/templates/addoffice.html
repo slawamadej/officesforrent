@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<form action="/offices/add" th:object="${office}" method="POST">
+<form action="/offices/add" th:object="${office}" method="POST" enctype="multipart/form-data">
     <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
 
     <div >
@@ -26,22 +26,13 @@
         <input  type="number" th:field="*{area}" placeholder="Office area">
         <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
     </div>
-
-    <!--     <select th:field="*{countryId}">
-        <option value=""> -- </option>
-        <option th:each="country : ${countries}"
-                th:value="${country.countryId}"
-                th:utext="${country.countryName}"/>
-    </select>
-
-
-
-  <label>First Name</label>
-   <div th:classappend="${#fields.hasErrors('firstName')} ? 'input-icon right' : ''">
-       <i th:if="${#fields.hasErrors('firstName')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
-       <input type="text" class="form-control" maxlength="32" th:field="*{firstName}" placeholder="First name"/>
-       <span th:if="${#fields.hasErrors('firstName')}" class="help-block" th:errors="*{firstName}"></span>
-   </div>-->
+    <div >
+        <input  type="file"  placeholder="Add photos" name="image" accept="image/png, image/jpeg">
+    </div>
+    <!--<div >
+        <input  type="file" th:field="*{photos}" placeholder="Add photos" name="image" accept="image/png, image/jpeg">
+        <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
+    </div>-->
 
     <input type="submit" value = "Save office">
 </form>

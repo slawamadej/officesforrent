@@ -9,8 +9,8 @@
 <div th:insert="menu.html :: div"></div>
 <div th:insert="search.html :: div"></div>
 <div class="offices">
-<div class = "office" th:each="office: ${offices}">
-    <p th:number="${office.officeId}"/>
+<div th:each="office: ${offices}">
+    <a style="display: block" class = "office" th:href="'offices/'+${office.officeId}">
     <h1 th:text="${office.name}"/>
     <table>
         <tr>
@@ -26,6 +26,10 @@
             <th><span th:text="${office.area}"/></th>
         </tr>
     </table>
+    <!--<img th:src="/${office.getPhotosImagePath()}" />-->
+    <img th:src="@{/user-photos/6/image.jpeg}"/>
+    <img src="/user-photos/6/image.jpeg"/>
+    </a>
 </div>
 </div>
 </body>
