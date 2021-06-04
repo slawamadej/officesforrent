@@ -1,10 +1,27 @@
 <html xmlns:sec="http://www.thymeleaf.org" lang="en">
 <div class="menu">
+	<div sec:authorize="hasAuthority('USER')" class="menu-separator-v"></div>
+	<a sec:authorize="hasAuthority('USER')" class="menu-element" href="/units/my">Profil</a>
+
 	<div class="menu-separator-v"></div>
-	<a class="menu-element" href="/user_panel">User panel</a>
+	<a class="menu-element" href="/offices/my">Moje gabinety</a>
+
+	<div class="menu-separator-v"></div>
+	<a class="menu-element" href="/reservation/my">Moje rezerwacje</a>
+
 	<!--tylko dla adminow-->
 	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/admin_panel">Admin panel</a>
+	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
+
+	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
+	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/users">Uzytkownicy</a>
+
+	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
+	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/units">Profile</a>
+
+	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
+	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
+
 	<div class="menu-separator-v"></div>
 	<a class="menu-element" href="/logout">Logout</a>
 </div>

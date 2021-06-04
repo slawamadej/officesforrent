@@ -6,10 +6,25 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<tr th:each="detail: ${details}" th:href="@{'/details'+${detail.detailId}}">
-    <td th:text="${detail.detailType}"/>
-    <td th:text="${detail.code}"/>
-    <td th:text="${detail.description}"/>
-</tr>
+<div th:insert="menu.html :: div"></div>
+<div class="details">
+<div class ="detail" >
+    <table class ="detail" >
+        <tr>
+            <th>Detail Type</th>
+            <th>Code</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        <tr th:each="detail: ${details}" th:href="@{'/details'+${detail.detailId}}">
+            <th th:text="${detail.detailType}"/>
+            <th th:text="${detail.code}"/>
+            <th th:text="${detail.description}"/>
+            <th><button>Edytuj</button><button>Usun</button></th>
+        </tr>
+
+    </table>
+</div>
+</div>
 </body>
 </html>

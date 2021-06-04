@@ -3,16 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Gabinety do wynajecia</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
 <div th:insert="search.html :: div"></div>
-<tr th:each="office: ${offices}">
-    <td th:number="${office.officeId}"/>
-    <td th:text="${office.name}"/>
-    <td th:text="${office.price}"/>
-    <td th:text="${office.capacity}"/>
-    <td th:text="${office.area}"/>
-</tr>
+<div class="offices">
+<div class = "office" th:each="office: ${offices}">
+    <p th:number="${office.officeId}"/>
+    <h1 th:text="${office.name}"/>
+    <table>
+        <tr>
+            <th>Price</th>
+            <th><span th:text="${office.price}"/></th>
+        </tr>
+        <tr>
+            <th>Capacity</th>
+            <th><span th:text="${office.capacity}"/></th>
+        </tr>
+        <tr>
+            <th>Area</th>
+            <th><span th:text="${office.area}"/></th>
+        </tr>
+    </table>
+</div>
+</div>
 </body>
 </html>

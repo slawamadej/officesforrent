@@ -2,18 +2,14 @@
 <!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
 <head>
 <title>Sign up</title>
-<link rel="stylesheet" type="text/css" href="css/login.css">
+<link rel="stylesheet" type="text/css" href="css/form.css">
 </head>
 
 <form class="login-form" action="/sign_up" method='POST'>
-	<h1 class="login-element">Sign up</h1>
-	<div class="login-element">Username:</div>
 	<!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
-	<input class="login-element" type='text' name="username" value=''>
-	<div class="login-element">Email:</div>
-	<input class="login-element" type='email' name="email" value=''>
-	<div class="login-element">Password:</div>
-	<input class="login-element" type='password' name="password" value=''>
+	<input class="login-element" type='text' name="username" value='' placeholder="Username">
+	<input class="login-element" type='email' name="email" value='' placeholder="E-mail">
+	<input class="login-element" type='password' name="password" value='' placeholder="Password">
 	<input class="login-element" name="submit" type="submit" value="Sign up">
 
 
