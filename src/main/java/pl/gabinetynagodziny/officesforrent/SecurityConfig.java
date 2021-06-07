@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.usernameParameter("username")
                 //.passwordParameter("password")
                 .successHandler(this.authSuccessHandler)
-                .defaultSuccessUrl("/user_panel", true)
+                .defaultSuccessUrl("/offices", true)
                 //TRUE- zawsze przekierowanie na ten url
                 //a jak false na ten zasob co wczesniej klikalo
                 .and()

@@ -13,4 +13,6 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
     @Query(value = "SELECT o.* FROM offices o WHERE o.price BETWEEN IFNULL(:priceMin, o.price) AND " +
             "IFNULL(:priceMax, o.price) AND o.capacity >= IFNULL(:capacityMin,0)", nativeQuery = true)
     List<Office> findSearch(@Param("priceMin") Float priceMin, @Param("priceMax") Float priceMax, @Param("capacityMin") Integer capacityMin);
+
+    List<Office> findByUserId(Long userId);
 }

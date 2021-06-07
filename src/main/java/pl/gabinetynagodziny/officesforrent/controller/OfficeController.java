@@ -54,6 +54,25 @@ public class OfficeController {
         return "offices";
     }
 
+    @GetMapping("/my")
+    public String officesMy(Model model, HttpSession httpSession){
+        Long sessionUserId = (Long) httpSession.getAttribute("userId");
+        List<Office> offices = officeService.findByUserId(sessionUserId);
+        model.addAttribute("offices", offices);
+        List<Detail> details = detailService.findAll();
+        List<Detail> furnishings = details.stream()
+                .filter(s -> s.getDetailType().equals(FURNISHINGS))
+                //  .sorted()
+                .collect(Collectors.toList());
+        List<Detail> purposes = details.stream()
+                .filter(s -> s.getDetailType().equals(PURPOSES))
+                //    .sorted()
+                .collect(Collectors.toList());
+        model.addAttribute("furnishings", furnishings);
+        model.addAttribute("purposes", purposes);
+        return "offices";
+    }
+
     @GetMapping("/add")
     public String addOffice(Model model){
         Office office = new Office();

@@ -1,6 +1,82 @@
 <html xmlns:sec="http://www.thymeleaf.org" lang="en">
 <div class="menu">
-	<div sec:authorize="hasAuthority('USER')" class="menu-separator-v"></div>
+	<!--https://www.aurainweb.pl/2016/07/rozwijane-poziome-menu-css-html/
+	https://stackoverflow.com/questions/37344727/thymeleaf-spring-security-tutaj o widocznosci spring security
+	-->
+
+	<nav>
+		<div class="container">
+			<div class="navbar-toggler">
+				<div class="bar1"></div>
+				<div class="bar2"></div>
+				<div class="bar3"></div>
+			</div>
+
+			<ul class="menu">
+				<li sec:authorize="isAnonymous()">
+					<a href="/login">Log in</a>
+				</li>
+				<!--<li <div sec:authentication="name">
+				The value of the "name" property of the authentication object should appear here.
+			</div>>
+
+				</li>-->
+				<li>
+					<a href="/notifications">Notifications</a>
+				</li>
+				<li>
+					<a href="/offices">Offices</a>
+					<ul>
+						<li>
+							<a href="/offices/add">Add new office</a>
+						</li>
+						<li>
+							<a href="/offices/my">Manage offices</a>
+						</li>
+						<li>
+							<a href="/offices/my/reservations">Reservations</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="hasAuthority('ADMIN')">
+					<a href="/reservations">Reservations</a>
+				</li>
+				<li>
+					<a href="/reservations/my">Reservations</a>
+				</li>
+				<li>
+					<a href="/contact">Contact</a>
+				</li>
+				<li sec:authorize="hasAuthority('ADMIN')">
+					<a href="/users">Users</a>
+					<ul>
+						<li>
+							<a href="/users/add">Add new user</a>
+						</li>
+						<li>
+							<a href="/users">Manage users</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="hasRole('USER')">
+					<a href="/details">Dictionaries</a>
+					<ul>
+						<li>
+							<a href="/details/add">Add new dictionary</a>
+						</li>
+						<li>
+							<a href="/details">Manage dictionary</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="isAuthenticated()">
+					<a  href="/logout">Log out</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+<!--	<div sec:authorize="hasAuthority('USER')" class="menu-separator-v"></div>
 	<a sec:authorize="hasAuthority('USER')" class="menu-element" href="/units/my">Profil</a>
 
 	<div class="menu-separator-v"></div>
@@ -9,7 +85,7 @@
 	<div class="menu-separator-v"></div>
 	<a class="menu-element" href="/reservation/my">Moje rezerwacje</a>
 
-	<!--tylko dla adminow-->
+    tylko dla adminow
 	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
 	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
 
@@ -23,5 +99,5 @@
 	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
 
 	<div class="menu-separator-v"></div>
-	<a class="menu-element" href="/logout">Logout</a>
+	<a class="menu-element" href="/logout">Logout</a>-->
 </div>

@@ -37,6 +37,11 @@ public class OfficeServiceImpl implements OfficeService {
         return officeRepository.findAll();
     }
 
+    @Override
+    public List<Office> findByUserId(Long userId) {
+        return officeRepository.findByUserId(userId);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Office> findSearch(Float priceMin, Float priceMax, Integer capacityMin){

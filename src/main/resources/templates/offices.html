@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Gabinety do wynajecia</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
@@ -11,7 +11,10 @@
 <div class="offices">
 <div th:each="office: ${offices}">
     <a style="display: block" class = "office" th:href="'offices/'+${office.officeId}">
-    <h1 th:text="${office.name}"/>
+    <!--<img th:src="/${office.getPhotosImagePath()}" />-->
+    <img th:src="@{/img/image.jpeg}"/>
+    <div class="officesInfo">
+        <h1 th:text="${office.name}"/>
     <table>
         <tr>
             <th>Price</th>
@@ -26,9 +29,21 @@
             <th><span th:text="${office.area}"/></th>
         </tr>
     </table>
-    <!--<img th:src="/${office.getPhotosImagePath()}" />-->
-    <img th:src="@{/user-photos/6/image.jpeg}"/>
-    <img src="/user-photos/6/image.jpeg"/>
+    </div>
+    <div class="officesButtons">
+        <form class="buttonform" action="offices/'+${office.officeId}/reservation" method="get">
+            <button th:href="'offices/'+${office.officeId}+'/reservation'">Make reservation</button>
+        </form>
+        <form class="buttonform" action="offices/'+${office.officeId}/schedule" method="get">
+            <button th:href="'offices/'+${office.officeId}+'/schedule'">Make reservation</button>
+        </form>
+        <form class="buttonform" action="offices/'+${office.officeId}" method="get">
+            <button th:href="'offices/'+${office.officeId}">Edit</button>
+        </form>
+        <form class="buttonform" action="offices/'+${office.officeId}" method="delete">
+            <button type="submit" >Remove</button>
+        </form>
+    </div>
     </a>
 </div>
 </div>

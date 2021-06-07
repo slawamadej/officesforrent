@@ -7,7 +7,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-form {
+.form {
     background-color: #fff;
     border: none;
     border-radius: 8px;
@@ -71,10 +71,11 @@ button{
 
 .office{
     background-color: #f0f2f5;
-    margin: 40px;
+    margin: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-    padding: 10px;
+    height: 200px;
+    margin-bottom: 20px;
 }
 
 .offices{
@@ -83,14 +84,10 @@ button{
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
     box-sizing: border-box;
-    margin: 40px auto;
-    padding: 20px 0 28px;
-    padding-top: 20px;
-    padding-bottom: 28px;
+    margin: 30px auto;
     width: 90%;
-    padding-bottom: 24px;
-    padding-top: 10px;
-    text-align:center;
+    text-align:left;
+    padding:10px;
 
 }
 
@@ -102,6 +99,43 @@ button{
     margin: 17px 17px 17px auto;
 }
 
+table {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+tr{
+    padding: 10px;
+}
+
+tr:first-child{
+    text-align: left;
+}
+tr:last-child{
+    text-align: left;
+}
+
+/*
+z neta
+ */
+
+/* https://www.aurainweb.pl/2016/07/rozwijane-poziome-menu-css-html/
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap&subset=latin-ext');
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size:18px;
+    margin:0;
+    padding: 0;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+/*
 .menu{
     background-color: #166fe5;
     display: flex;
@@ -125,13 +159,164 @@ button{
     border-left: 2px solid white;
 }
 
-tr{
-    padding: 10px;
+ */
+
+nav{
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 0;
+    margin:0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    background-color: #166fe5;
+}
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+}
+.menu{
+    padding: 0px;
+    margin:0px;
+    position:relative;
+}
+.menu li{
+    float:left;
+    list-style:none;
+}
+.menu li a{
+    padding: 20px 15px;
+    display: inline-block;
+    text-decoration:none;
+    position:relative;
+    z-index: 1;
+    color: #fff;
+    text-transform:uppercase;
+}
+.menu li a::before{
+    content:" ";
+    position: absolute;
+    background:#ccc;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    transition-duration:1s;
+}
+.menu li:hover > a::before{
+    width:100%;
+}
+.menu li:hover a{
+    background: #333;
+    color: #fff;
+}
+.menu li ul{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 100;
+    display:none;
+}
+.menu li:hover ul{
+    display:block;
+}
+.menu li ul li{
+    display:block;
+    width: 100%;
+}
+.menu li ul li a{
+    width: 100%;
+}
+/* navbar-toggler */
+
+.navbar-toggler {
+    display: none;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
-tr:first-child{
-    text-align: left;
+.navbar-toggler .bar1, .navbar-toggler .bar2, .navbar-toggler .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
 }
-tr:last-child{
+
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+    transform: rotate(-45deg) translate(-9px, 6px) ;
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+    transform: rotate(45deg) translate(-8px, -8px) ;
+}
+@media screen and (min-width: 700px) {
+    .menu{
+        display: block !important;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .navbar-toggler {
+        display: inline-block;
+    }
+    .menu{
+        display: none;
+        position:absolute;
+        background: rgba(0,0,0,0.8);
+        width: 100%;
+        text-align: center;
+    }
+    .menu li{
+        float:none;
+    }
+    .menu li ul {
+        position:relative;
+    }
+}
+
+/*
+OFFICES
+ */
+img {
+    float: left;
+    border-radius: 8px;
+    padding: 20px;
+    height: 200px;
+}
+
+.officesInfo{
+    float: left;
+    width: 50%;
+    height: 180px;
+    margin: 20px 0px;
+}
+
+.officesButtons {
+    float: right;
+    height: 180px;
+    margin: 20px;
+    border-collapse: collapse;
+}
+
+.officesButtons button{
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+.officesInfo h1{
+    margin: 0;
     text-align: left;
+    font-size: 20px;
+    text-decoration: underline;
 }

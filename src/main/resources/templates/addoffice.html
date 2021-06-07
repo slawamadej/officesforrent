@@ -7,7 +7,7 @@
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<form action="/offices/add" th:object="${office}" method="POST" enctype="multipart/form-data">
+<form class ="form" action="/offices/add" th:object="${office}" method="POST" enctype="multipart/form-data">
     <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
 
     <div >
