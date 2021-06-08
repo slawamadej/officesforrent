@@ -15,6 +15,7 @@
     <img th:src="@{/img/image.jpeg}"/>
     <div class="officesInfo">
         <h1 th:text="${office.name}"/>
+        <p th:text="${office.description}"/>
     <table>
         <tr>
             <th>Price</th>
@@ -29,18 +30,18 @@
             <th><span th:text="${office.area}"/></th>
         </tr>
     </table>
-    </div>
+    </div>units
     <div class="officesButtons">
-        <form class="buttonform" action="offices/'+${office.officeId}/reservation" method="get">
+        <form class="buttonform" action="'offices/'+${office.officeId}+'/reservation'" method="get">
             <button th:href="'offices/'+${office.officeId}+'/reservation'">Make reservation</button>
         </form>
-        <form class="buttonform" action="offices/'+${office.officeId}/schedule" method="get">
-            <button th:href="'offices/'+${office.officeId}+'/schedule'">Make reservation</button>
+        <form class="buttonform" action="'offices/'+${office.officeId}" method="get">
+            <button th:href="'offices/'+${office.officeId}">Schedule</button>
         </form>
-        <form class="buttonform" action="offices/'+${office.officeId}" method="get">
+        <form class="buttonform" action="'offices/'+${office.officeId}" method="get">
             <button th:href="'offices/'+${office.officeId}">Edit</button>
         </form>
-        <form class="buttonform" action="offices/'+${office.officeId}" method="delete">
+        <form class="buttonform" action="'offices/'+${office.officeId}" method="delete">
             <button type="submit" >Remove</button>
         </form>
     </div>

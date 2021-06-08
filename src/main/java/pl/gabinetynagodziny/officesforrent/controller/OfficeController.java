@@ -7,17 +7,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.gabinetynagodziny.officesforrent.entity.Detail;
+import pl.gabinetynagodziny.officesforrent.entity.DictionaryApp;
 import pl.gabinetynagodziny.officesforrent.entity.Office;
-import pl.gabinetynagodziny.officesforrent.repository.OfficeRepository;
+import pl.gabinetynagodziny.officesforrent.entity.Schedule;
 import pl.gabinetynagodziny.officesforrent.service.DetailService;
+import pl.gabinetynagodziny.officesforrent.service.DictionaryAppService;
 import pl.gabinetynagodziny.officesforrent.service.OfficeService;
+import pl.gabinetynagodziny.officesforrent.service.ScheduleService;
 import pl.gabinetynagodziny.officesforrent.util.FileUploadUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +29,20 @@ public class OfficeController {
 
     private final OfficeService officeService;
     private final DetailService detailService;
+    private final ScheduleService scheduleService;
+    private final DictionaryAppService dictionaryAppService;
+
     public static final String FURNISHINGS = "FURNISHINGS";
     public static final String PURPOSES = "PURPOSES";
+    public static final String SCHEDULE_TYPE = "SCHEDULE_TYPE";
+    public static final String DAYS_OF_WEEK = "DAYS_OF_WEEK";
 
-    public OfficeController(OfficeService officeService, DetailService detailService){
+    public OfficeController(OfficeService officeService, DetailService detailService
+            , DictionaryAppService dictionaryAppService, ScheduleService scheduleService){
         this.officeService = officeService;
         this.detailService = detailService;
+        this.dictionaryAppService = dictionaryAppService;
+        this.scheduleService = scheduleService;
     }
 
     @GetMapping
@@ -43,11 +52,9 @@ public class OfficeController {
         List<Detail> details = detailService.findAll();
         List<Detail> furnishings = details.stream()
                 .filter(s -> s.getDetailType().equals(FURNISHINGS))
-              //  .sorted()
                 .collect(Collectors.toList());
         List<Detail> purposes = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
-            //    .sorted()
                 .collect(Collectors.toList());
         model.addAttribute("furnishings", furnishings);
         model.addAttribute("purposes", purposes);
@@ -62,11 +69,9 @@ public class OfficeController {
         List<Detail> details = detailService.findAll();
         List<Detail> furnishings = details.stream()
                 .filter(s -> s.getDetailType().equals(FURNISHINGS))
-                //  .sorted()
                 .collect(Collectors.toList());
         List<Detail> purposes = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
-                //    .sorted()
                 .collect(Collectors.toList());
         model.addAttribute("furnishings", furnishings);
         model.addAttribute("purposes", purposes);
@@ -120,15 +125,12 @@ public class OfficeController {
 
         List<Office> offices =
                 officeService.findSearch(priceMin, priceMax, capacityMin);
-        System.out.println("ile gabinetow: " + offices.size());
         List<Detail> details = detailService.findAll();
         List<Detail> furnishings = details.stream()
                 .filter(s -> s.getDetailType().equals(FURNISHINGS))
-                .sorted()
                 .collect(Collectors.toList());
         List<Detail> purposes = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
-                .sorted()
                 .collect(Collectors.toList());
         model.addAttribute("furnishings", furnishings);
         model.addAttribute("purposes", purposes);
@@ -137,5 +139,56 @@ public class OfficeController {
         return "offices";
     }
 
+    //SCHEDULE
+    @GetMapping("/{id}/schedule")
+    public String schedule(Model model, @PathVariable("id") Long id){
+        Optional<Office> optionalOffice = officeService.findByOfficeId(id);
+        List<DictionaryApp> dictionaries = dictionaryAppService.findAll();
+        List<DictionaryApp> scheduleTypes = dictionaries.stream()
+                .filter(s -> s.getDictCode().equals(SCHEDULE_TYPE))
+                .collect(Collectors.toList());
+
+        model.addAttribute("scheduleTypes", scheduleTypes);
+
+        if(optionalOffice.isEmpty()){
+        }
+        model.addAttribute("office", optionalOffice.get());
+        return "schedules";
+    }
+
+    @GetMapping("/{id}/schedule/add")
+    public String scheduleAdd(Model model, @PathVariable("id") Long id){
+        Schedule schedule = new Schedule();
+        List<DictionaryApp> dictionaries = dictionaryAppService.findAll();
+        List<DictionaryApp> scheduleTypes = dictionaries.stream()
+                .filter(s -> s.getDictCode().equals(SCHEDULE_TYPE))
+                .collect(Collectors.toList());
+        List<DictionaryApp> days = dictionaries.stream()
+                .filter(s -> s.getDictCode().equals(DAYS_OF_WEEK))
+                .collect(Collectors.toList());
+
+        model.addAttribute("scheduleTypes", scheduleTypes);
+        model.addAttribute("days", days);
+        model.addAttribute("schedule", schedule);
+        model.addAttribute("officeId", id);
+        return "addschedule";
+    }
+
+    @PostMapping("/{id}/schedule/add")
+    public String scheduleAddPost(Model model, @PathVariable("id") Long id, @Valid Schedule schedule){
+        Optional<Office> optionalOffice = officeService.findByOfficeId(id);
+        if(optionalOffice.isEmpty()){
+        }
+        Office office = optionalOffice.get();
+        schedule.setOffice(office);
+        System.out.println("koncowa data:" + schedule.getEndTime());
+        Schedule scheduleSaved = scheduleService.mergeSchedule(schedule);
+
+
+        office.addSchedule(scheduleSaved);
+
+        return "redirect:/offices/" + id + "/schedule";
+
+    }
 
 }

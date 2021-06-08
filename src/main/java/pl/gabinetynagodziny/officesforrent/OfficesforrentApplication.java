@@ -31,11 +31,6 @@ public class OfficesforrentApplication extends SpringBootServletInitializer {
         return new AuthSuccessHandler();
     }
 
-    @RequestMapping("/")
-    public String welcome() {
-        return "offices";
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(OfficesforrentApplication.class, args);
     }

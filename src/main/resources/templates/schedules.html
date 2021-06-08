@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gabinety do wynajecia</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+
+<div class="offices">
+
+            <img th:src="@{/img/image.jpeg}"/>
+            <div class="officesInfo">
+                <h1 th:text="${office.name}"/>
+                <p th:text="${office.description}"/>
+                <table>
+                    <tr>
+                        <th>Price</th>
+                        <th><span th:text="${office.price}"/></th>
+                    </tr>
+                    <tr>
+                        <th>Capacity</th>
+                        <th><span th:text="${office.capacity}"/></th>
+                    </tr>
+                    <tr>
+                        <th>Area</th>
+                        <th><span th:text="${office.area}"/></th>
+                    </tr>
+                </table>
+            </div>
+
+    <div th:each="schedule : ${office.schedules}">
+        <span th:text="${schedule.startDate}"></span>
+        <span th:text="${schedule.endDate}"></span>
+        <span th:text="${schedule.startTime}"></span>
+        <span th:text="${schedule.endTime}"></span>
+
+        <select th:object="${scheduleTypes}" name="scheduleTypes">
+            <option th:each="scheduleType: ${scheduleTypes}"
+                    th:if="${scheduleType.dictCode} == ${schedule.scheduleType}"
+                    th:value="${scheduleType.dictId}"
+                    th:text="${scheduleType.description}"></option>
+        </select>
+    </div>
+</div>
+</body>
+</html>

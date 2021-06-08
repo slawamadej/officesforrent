@@ -25,8 +25,8 @@ public class Office {
 
     private Long userId;
 
-    @NotNull(message="Nie moze  puste")
     private String name;
+    private String description;
 
     @NotNull
     private BigDecimal price;
@@ -36,13 +36,6 @@ public class Office {
 
     private String photos;
 
-    @Transient
-    public String getPhotosImagePath() {
-        if (photos == null || officeId == null) return null;
-
-        return "/user-photos/" + officeId + "/" + photos;
-    }
-
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="userId", insertable = false, updatable = false)
     private Unit unit;
@@ -50,5 +43,21 @@ public class Office {
     @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "officeDetails", joinColumns = @JoinColumn(name = "officeId"), inverseJoinColumns = @JoinColumn(name = "detailId"))
     private List<Detail> details;
+
+    @OneToMany(fetch=FetchType.LAZY,
+            mappedBy = "office",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            orphanRemoval = true)
+    private List<Schedule> schedules;
+
+    public void addSchedule(Schedule schedule){
+        schedules.add(schedule);
+        schedule.setOffice(this);
+    }
+
+    public void removeSchedule(Schedule schedule){
+        schedules.remove(schedule);
+        schedule.setOffice(null);
+    }
 
 }
