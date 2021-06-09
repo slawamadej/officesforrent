@@ -93,7 +93,6 @@ public class OfficeController {
         }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        System.out.println("Zdjecie nazwa: "+fileName);
         office.setPhotos(fileName);
 
         Long sessionUserId = (Long) httpSession.getAttribute("userId");
@@ -103,7 +102,8 @@ public class OfficeController {
 
         Office officeSaved = officeService.mergeOffice(office);
 
-        String uploadDir = "user-photos/" + officeSaved.getOfficeId();
+        //String uploadDir = "user-photos/" + officeSaved.getOfficeId();
+        String uploadDir = "src/main/resources/static/img/" + officeSaved.getOfficeId();
         System.out.println("uploadDir" + uploadDir);
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "redirect:/offices/"+ officeSaved.getOfficeId();
@@ -152,7 +152,11 @@ public class OfficeController {
 
         if(optionalOffice.isEmpty()){
         }
-        model.addAttribute("office", optionalOffice.get());
+
+        Office office = optionalOffice.get();
+        office.refreshOfficeScheduleMap();
+        System.out.println("Office schedule Map: " + office.getOfficeScheduleMap().size());
+        model.addAttribute("office", office);
         return "schedules";
     }
 
@@ -175,17 +179,18 @@ public class OfficeController {
     }
 
     @PostMapping("/{id}/schedule/add")
-    public String scheduleAddPost(Model model, @PathVariable("id") Long id, @Valid Schedule schedule){
+    public String scheduleAddPost(Model model, @PathVariable("id") Long id, Schedule schedule){
+        System.out.println("START TIME" + schedule.getStartTime());
+
         Optional<Office> optionalOffice = officeService.findByOfficeId(id);
         if(optionalOffice.isEmpty()){
         }
         Office office = optionalOffice.get();
         schedule.setOffice(office);
-        System.out.println("koncowa data:" + schedule.getEndTime());
         Schedule scheduleSaved = scheduleService.mergeSchedule(schedule);
 
-
         office.addSchedule(scheduleSaved);
+        office.refreshOfficeScheduleMap();
 
         return "redirect:/offices/" + id + "/schedule";
 

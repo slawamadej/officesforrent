@@ -15,13 +15,13 @@
         <select  th:field="*{scheduleType}">
             <option value="">Select Schedule Type</option>
             <option th:each="scheduleType : ${scheduleTypes}"
-                    th:value="${scheduleType.dictId}"
+                    th:value="${scheduleType.code}"
                     th:text="${scheduleType.description}"></option>
         </select>
         <select th:field="*{dayOfTheWeek}">
             <option value="">Select Day</option>
             <option th:each="day : ${days}"
-                    th:value="${day.dictId}"
+                    th:value="${day.code}"
                     th:text="${day.description}"></option>
         </select>
 
@@ -45,8 +45,8 @@
             </div>
         </div>
 
-        <input type="time"  placeholder="Start time" th:field="*{startTime}"/>
-        <input type="time"  placeholder="End time" th:field="*{endTime}"/>
+        <input type="number" min="0" max="23"  placeholder="Start time" th:field="*{startTime}"/>
+        <input type="number"  min="1" max="24" placeholder="End time" th:field="*{endTime}"/>
 
         <input type="submit" value = "Save schedule">
     </form>

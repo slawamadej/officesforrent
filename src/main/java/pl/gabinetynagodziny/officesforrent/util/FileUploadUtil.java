@@ -10,7 +10,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 
-// kod wziety ze strony:   //https://www.codejava.net/frameworks/spring-boot/spring-boot-file-upload-tutorial
+// kod wziety ze strony:
+// https://www.codejava.net/frameworks/spring-boot/spring-boot-file-upload-tutorial
 public class FileUploadUtil {
     public static void saveFile(String uploadDir, String fileName,
                                 MultipartFile multipartFile) throws IOException {

@@ -11,8 +11,8 @@
 <div class="offices">
 <div th:each="office: ${offices}">
     <a style="display: block" class = "office" th:href="'offices/'+${office.officeId}">
-    <!--<img th:src="/${office.getPhotosImagePath()}" />-->
-    <img th:src="@{/img/image.jpeg}"/>
+    <!--<img th:src="@{/img/image.jpeg}"/>-->
+        <img th:src="@{${'/img/'+ office.officeId + '/' +office.photos}}"/>
     <div class="officesInfo">
         <h1 th:text="${office.name}"/>
         <p th:text="${office.description}"/>

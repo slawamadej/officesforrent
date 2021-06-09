@@ -69,6 +69,16 @@ button{
     color :#ffffff;
 }
 
+.buttonTime{
+    padding: 2px;
+    font-size: 16px;
+    margin: 5px;
+    width: 50px;
+    line-height: 22px;
+    display: inline;
+    float: left;
+}
+
 .office, .schedule{
     background-color: #f0f2f5;
     margin: 10px;
@@ -320,3 +330,42 @@ img {
     font-size: 20px;
     text-decoration: underline;
 }
+
+.scheduleRules {
+    border: solid 1px grey;
+    margin: 10px auto;
+    border-radius: 8px;
+    font-weight: normal;
+}
+
+.scheduleRules tr {
+    text-align: center;
+}
+
+.scheduleRules:first-child{
+    border: solid 1px grey;
+}
+
+.availableTerm{
+    margin-left: 20px;
+    text-align: left;
+}
+
+.schedule{
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+    margin: 40px auto;
+    padding: 20px 0 28px;
+    padding-top: 20px;
+    padding-bottom: 28px;
+    width: 730px;
+    padding-bottom: 24px;
+    padding-top: 10px;
+    text-align:center;
+    height: auto;
+}
+
+<img th:src="'@{/img/' + ${office.officeId} + '/' +${office.photos}"/>
