@@ -23,8 +23,13 @@
             <th>End time</th>
         </tr>
         <tr th:each="schedule : ${office.schedules}">
-            <th th:text="${schedule.scheduleType}"/>
-            <th th:text="${schedule.dayOfTheWeek}"/>
+            <div th:each="scheduleType : ${scheduleTypes}">
+            <th th:if="${scheduleType.code} == ${schedule.scheduleType}" th:text="${scheduleType.description}"/>
+            </div>
+            <div th:each="day : ${dayOfTheWeek}">
+                <th th:if="${day.code} == ${schedule.dayOfTheWeek}" th:text="${day.description}"/>
+            </div>
+            <th th:text="${schedule.dayOfTheWeek}?:' '"></th>
             <th th:text="${schedule.startDate}"/>
             <th th:text="${schedule.endDate}"/>
             <th th:text="${schedule.startTime}"/>

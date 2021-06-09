@@ -11,9 +11,10 @@ import pl.gabinetynagodziny.officesforrent.entity.DictionaryApp;
 import pl.gabinetynagodziny.officesforrent.entity.Office;
 import pl.gabinetynagodziny.officesforrent.entity.Schedule;
 import pl.gabinetynagodziny.officesforrent.service.DetailService;
-import pl.gabinetynagodziny.officesforrent.service.DictionaryAppService;
+import pl.gabinetynagodziny.officesforrent.service.DictionaryService;
 import pl.gabinetynagodziny.officesforrent.service.OfficeService;
 import pl.gabinetynagodziny.officesforrent.service.ScheduleService;
+import pl.gabinetynagodziny.officesforrent.util.Constans;
 import pl.gabinetynagodziny.officesforrent.util.FileUploadUtil;
 
 import javax.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class OfficeController {
     private final OfficeService officeService;
     private final DetailService detailService;
     private final ScheduleService scheduleService;
-    private final DictionaryAppService dictionaryAppService;
+    private final DictionaryService dictionaryService;
 
     public static final String FURNISHINGS = "FURNISHINGS";
     public static final String PURPOSES = "PURPOSES";
@@ -38,10 +39,10 @@ public class OfficeController {
     public static final String DAYS_OF_WEEK = "DAYS_OF_WEEK";
 
     public OfficeController(OfficeService officeService, DetailService detailService
-            , DictionaryAppService dictionaryAppService, ScheduleService scheduleService){
+            , DictionaryService dictionaryService, ScheduleService scheduleService){
         this.officeService = officeService;
         this.detailService = detailService;
-        this.dictionaryAppService = dictionaryAppService;
+        this.dictionaryService = dictionaryService;
         this.scheduleService = scheduleService;
     }
 
@@ -143,12 +144,18 @@ public class OfficeController {
     @GetMapping("/{id}/schedule")
     public String schedule(Model model, @PathVariable("id") Long id){
         Optional<Office> optionalOffice = officeService.findByOfficeId(id);
-        List<DictionaryApp> dictionaries = dictionaryAppService.findAll();
+        List<DictionaryApp> dictionaries = dictionaryService.findAll();
         List<DictionaryApp> scheduleTypes = dictionaries.stream()
-                .filter(s -> s.getDictCode().equals(SCHEDULE_TYPE))
+                .filter(s -> s.getDictCode().equals(Constans.SCHEDULE_TYPE))
                 .collect(Collectors.toList());
 
         model.addAttribute("scheduleTypes", scheduleTypes);
+
+        List<DictionaryApp> dayOfTheWeek = dictionaries.stream()
+                .filter(s -> s.getDictCode().equals(Constans.DAYS_OF_WEEK))
+                .collect(Collectors.toList());
+
+        model.addAttribute("dayOfTheWeek", dayOfTheWeek);
 
         if(optionalOffice.isEmpty()){
         }
@@ -163,7 +170,7 @@ public class OfficeController {
     @GetMapping("/{id}/schedule/add")
     public String scheduleAdd(Model model, @PathVariable("id") Long id){
         Schedule schedule = new Schedule();
-        List<DictionaryApp> dictionaries = dictionaryAppService.findAll();
+        List<DictionaryApp> dictionaries = dictionaryService.findAll();
         List<DictionaryApp> scheduleTypes = dictionaries.stream()
                 .filter(s -> s.getDictCode().equals(SCHEDULE_TYPE))
                 .collect(Collectors.toList());

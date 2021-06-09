@@ -24,8 +24,6 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long unitId;
 
-    //  @OneToOne(cascade = CascadeType.MERGE)
-    //  @JoinColumn(name = "userId")
     private Long userId;
     private Boolean consent;
 
@@ -41,26 +39,13 @@ public class Unit {
 
     private String taxNumber;
 
-   // @OneToOne
-   // @JoinColumn(name="userId", insertable = false, updatable = false)
-   // private User user;
+    @OneToOne(mappedBy = "unit")
+    private User user;
 
     @OneToMany
     @JoinColumn(name="userId")
     private List<Office> offices;
 
-   // public void addOffice(Office office){
-   //     if(offices == null){
-    //        offices = new ArrayList<>();
-    //    }
-//
-  //      offices.add(office);
- //       office.setUnitId(this.unitId);
-  //  }
-
-    //   @OneToOne(cascade = CascadeType.MERGE) //sprawdz te kasksde o co cho
-    //   @JoinColumn(name = "addressId")
-    //   private Address address;
 
 }
 

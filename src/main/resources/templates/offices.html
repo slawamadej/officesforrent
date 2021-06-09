@@ -32,16 +32,16 @@
     </table>
     </div>units
     <div class="officesButtons">
-        <form class="buttonform" action="'offices/'+${office.officeId}+'/reservation'" method="get">
+        <form class="buttonform" th:action="'offices/'+${office.officeId}+'/reservation'" method="get">
             <button th:href="'offices/'+${office.officeId}+'/reservation'">Make reservation</button>
         </form>
-        <form class="buttonform" action="'offices/'+${office.officeId}" method="get">
-            <button th:href="'offices/'+${office.officeId}">Schedule</button>
+        <form class="buttonform">
+            <button th:href="'offices/'+${office.officeId}+'schedule'">Schedule</button>
         </form>
-        <form class="buttonform" action="'offices/'+${office.officeId}" method="get">
+        <form class="buttonform" th:action="'offices/'+${office.officeId}" method="get">
             <button th:href="'offices/'+${office.officeId}">Edit</button>
         </form>
-        <form class="buttonform" action="'offices/'+${office.officeId}" method="delete">
+        <form class="buttonform" th:action="'offices/'+${office.officeId}" method="delete">
             <button type="submit" >Remove</button>
         </form>
     </div>

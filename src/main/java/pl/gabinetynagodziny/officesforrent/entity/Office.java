@@ -54,6 +54,12 @@ public class Office {
             orphanRemoval = true)
     private List<Schedule> schedules;
 
+    @OneToMany(fetch=FetchType.LAZY,
+            mappedBy = "office",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            orphanRemoval = true)
+    private List<Reservation> reservations;
+
     public void addSchedule(Schedule schedule){
         schedules.add(schedule);
         schedule.setOffice(this);

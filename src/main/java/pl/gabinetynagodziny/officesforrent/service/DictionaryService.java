@@ -4,7 +4,9 @@ import pl.gabinetynagodziny.officesforrent.entity.DictionaryApp;
 
 import java.util.List;
 
-public interface DictionaryAppService {
+public interface DictionaryService {
 
     List<DictionaryApp> findAll();
+
+    String findDescriptionByCode(String code);
 }

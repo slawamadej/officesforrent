@@ -2,19 +2,9 @@ package pl.gabinetynagodziny.officesforrent.entity;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.gabinetynagodziny.officesforrent.util.Constans;
-import pl.gabinetynagodziny.officesforrent.util.ScheduleUtil;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -42,35 +32,15 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     private Office office;
 
-   /*private List<ScheduleUtil> scheduleUtilList;
+/*
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="scheduleType", referencedColumnName="code", insertable = false, updatable = false)
+    private DictionaryApp dictScheduleType;
 
-    public Schedule(String scheduleType, String dayOfTheWeek, LocalDate startDate, LocalDate endDate, Integer startTime, Integer endTime){
-        this.scheduleType = scheduleType;
-        this.dayOfTheWeek = dayOfTheWeek;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.setScheduleUtilList();
-    }
-
-
-
-    public void setScheduleUtilList(){
-        List<ScheduleUtil> listScheduleUtil = new ArrayList<>();
-
-        for(LocalDate date = this.startDate; date.isBefore(this.endDate); date = date.plusDays(1)){
-            if (this.scheduleType == Constans.DAYS_OF_WEEK && !DayOfWeek.from(date).name().equals(this.dayOfTheWeek)){
-                continue;
-            }
-            LinkedHashSet<String> hours = new LinkedHashSet<>();
-            for(Integer i = this.startTime; i <= this.endTime; i++){
-                hours.add(String.valueOf(i)+":00");
-            }
-            ScheduleUtil scheduleUtil = new ScheduleUtil(date, hours);
-            listScheduleUtil.add(scheduleUtil);
-        }
-        this.scheduleUtilList = listScheduleUtil;
-    }*/
+    @ManyToOne(fetch=FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="dayOfTheWeek", referencedColumnName="code", insertable = false, updatable = false)
+    private DictionaryApp dictDayOfTheWeek;
+*/
 
 }

@@ -45,9 +45,15 @@ public class User implements UserDetails {
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
-   // @OneToOne
-   // @JoinColumn(name="userId")
-    //private Unit unit;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="userId")
+    private Unit unit;
+
+    @OneToMany(fetch=FetchType.LAZY,
+            mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            orphanRemoval = true)
+    private List<Reservation> reservations;
 
     //dla kazdej encji ma byc bezparametrowy konstruktor
     public User(){ }
