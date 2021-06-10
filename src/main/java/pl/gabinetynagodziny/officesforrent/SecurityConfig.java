@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import pl.gabinetynagodziny.officesforrent.provider.CustomDaoAuthenticationProvider;
 import pl.gabinetynagodziny.officesforrent.service.impl.JpaUserDetailsService;
+import pl.gabinetynagodziny.officesforrent.util.Constans;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -41,27 +42,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()//jaka metoda wolna od uwierzytelniania
                 .antMatchers("/offices").permitAll()
-                .antMatchers("/offices/*").permitAll()
-                .antMatchers("/details").permitAll()
-                .antMatchers("/details/*").permitAll()
+                .antMatchers("/offices/search").permitAll()
                 .antMatchers("/sign_up").permitAll()
                 .antMatchers("/confirm_email").permitAll()
+                .antMatchers("/search").permitAll()
                 .antMatchers("/css/**").permitAll()
-                .antMatchers("/user-photos/**").permitAll()
-                .antMatchers("/offices/css/**").permitAll()
-                .antMatchers("/details/css/**").permitAll()
-                .antMatchers("/units/css/**").permitAll()
+                .antMatchers("/img/**").permitAll()
                 .antMatchers("/static/css/**").permitAll()
-                .antMatchers("/admin_panel").hasAuthority("ADMIN")
-                //.anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/static/img/**").permitAll()
+                //.antMatchers("/offices/css/**").permitAll()
+                //.antMatchers("/details/css/**").permitAll()
+                .antMatchers("/units/**").authenticated()
+                .antMatchers("/offices/**").authenticated()
+                .antMatchers("/reservations/**").authenticated()
+                .antMatchers("/notifications").authenticated()
+                .antMatchers("/details").hasRole(Constans.ADMIN)
+                .antMatchers("/details/**").hasRole(Constans.ADMIN)
+                .antMatchers("/admin_panel").hasRole(Constans.ADMIN)
                 .and()
             .formLogin()
                 .loginPage("/login")
-                //.usernameParameter("username")
-                //.passwordParameter("password")
                 .successHandler(this.authSuccessHandler)
-                .defaultSuccessUrl("/offices", true)
+                .defaultSuccessUrl("/offices", false)
                 //TRUE- zawsze przekierowanie na ten url
                 //a jak false na ten zasob co wczesniej klikalo
                 .and()

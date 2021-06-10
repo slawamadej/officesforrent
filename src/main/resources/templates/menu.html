@@ -16,15 +16,10 @@
 				<li sec:authorize="isAnonymous()">
 					<a href="/login">Log in</a>
 				</li>
-				<!--<li <div sec:authentication="name">
-				The value of the "name" property of the authentication object should appear here.
-			</div>>
-
-				</li>-->
-				<li>
+				<li sec:authorize="isAuthenticated()">
 					<a href="/notifications">Notifications</a>
 				</li>
-				<li>
+				<li sec:authorize="hasRole('USER')">
 					<a href="/offices">Offices</a>
 					<ul>
 						<li>
@@ -38,16 +33,16 @@
 						</li>
 					</ul>
 				</li>
-				<li sec:authorize="hasAuthority('ADMIN')">
+				<li sec:authorize="hasRole('ADMIN')">
 					<a href="/reservations">Reservations</a>
 				</li>
-				<li>
+				<li sec:authorize="hasRole('USER')">
 					<a href="/reservations/my">Reservations</a>
 				</li>
-				<li>
+				<li sec:authorize="hasRole('USER')">
 					<a href="/contact">Contact</a>
 				</li>
-				<li sec:authorize="hasAuthority('ADMIN')">
+				<li sec:authorize="hasRole('ADMIN')">
 					<a href="/users">Users</a>
 					<ul>
 						<li>
@@ -58,7 +53,7 @@
 						</li>
 					</ul>
 				</li>
-				<li sec:authorize="hasRole('USER')">
+				<li sec:authorize="hasRole('ADMIN')">
 					<a href="/details">Dictionaries</a>
 					<ul>
 						<li>
@@ -76,28 +71,4 @@
 		</div>
 	</nav>
 
-<!--	<div sec:authorize="hasAuthority('USER')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('USER')" class="menu-element" href="/units/my">Profil</a>
-
-	<div class="menu-separator-v"></div>
-	<a class="menu-element" href="/offices/my">Moje gabinety</a>
-
-	<div class="menu-separator-v"></div>
-	<a class="menu-element" href="/reservation/my">Moje rezerwacje</a>
-
-    tylko dla adminow
-	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
-
-	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/users">Uzytkownicy</a>
-
-	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/units">Profile</a>
-
-	<div sec:authorize="hasAuthority('ADMIN')" class="menu-separator-v"></div>
-	<a sec:authorize="hasAuthority('ADMIN')" class="menu-element" href="/details">Slowniki</a>
-
-	<div class="menu-separator-v"></div>
-	<a class="menu-element" href="/logout">Logout</a>-->
 </div>

@@ -4,49 +4,67 @@
     <meta charset="UTF-8">
     <title>Gabinety do wynajecia</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css" integrity="sha512-TQQ3J4WkE/rwojNFo6OJdyu6G8Xe9z8rMrlF9y7xpFbQfW5g8aSWcygCQ4vqRiJqFsDsE1T6MoAOMJkFXlrI9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
 <div th:insert="search.html :: div"></div>
 <div class="offices">
 <div th:each="office: ${offices}">
-    <a style="display: block" class = "office" th:href="'offices/'+${office.officeId}">
-    <!--<img th:src="@{/img/image.jpeg}"/>-->
+    <div class = "office">
         <img th:src="@{${'/img/'+ office.officeId + '/' +office.photos}}"/>
-    <div class="officesInfo">
-        <h1 th:text="${office.name}"/>
-        <p th:text="${office.description}"/>
-    <table>
-        <tr>
-            <th>Price</th>
-            <th><span th:text="${office.price}"/></th>
-        </tr>
-        <tr>
-            <th>Capacity</th>
-            <th><span th:text="${office.capacity}"/></th>
-        </tr>
-        <tr>
-            <th>Area</th>
-            <th><span th:text="${office.area}"/></th>
-        </tr>
-    </table>
-    </div>units
-    <div class="officesButtons">
-        <form class="buttonform" th:action="'offices/'+${office.officeId}+'/reservation'" method="get">
-            <button th:href="'offices/'+${office.officeId}+'/reservation'">Make reservation</button>
-        </form>
-        <form class="buttonform">
-            <button th:href="'offices/'+${office.officeId}+'schedule'">Schedule</button>
-        </form>
+        <div class="officesInfo">
+            <div>
+                <h1 th:text="${office.name}"/>
+                <p th:text="${office.description}"/>
+                    <table>
+                        <tr>
+                            <th>Price</th>
+                            <th><span th:text="${office.price}"/></th>
+                        </tr>
+                        <tr>
+                            <th>Capacity</th>
+                            <th><span th:text="${office.capacity}"/></th>
+                        </tr>
+                        <tr>
+                            <th>Area</th>
+                            <th><span th:text="${office.area}"/></th>
+                        </tr>
+                    </table>
+            </div>
+            <div>
+                <h1 th:if="${office.officeScheduleMap.size()} > 0">Closest Available terms</h1>
+                <div class ="availableTerm" th:each="entry, iStat : ${office.officeScheduleMap}" th:unless="${iStat.index > 2}">
+                    <p th:text="${entry.key}"></p>
+                    <div th:each="item : ${entry.value}">
+                        <form  th:action="'offices/'+${office.officeId}+'/reservation/add/'+${entry.key}+'/'+${item}" method="get">
+                            <button class="buttonTime" th:text="${item}" type="submit"></button>
+                        </form>
+                    </div>
+                    </br>
+                </div>
+            </div>
+        </div>
         <form class="buttonform" th:action="'offices/'+${office.officeId}" method="get">
-            <button th:href="'offices/'+${office.officeId}">Edit</button>
-        </form>
-        <form class="buttonform" th:action="'offices/'+${office.officeId}" method="delete">
-            <button type="submit" >Remove</button>
+            <button type="submit" >More details</button>
         </form>
     </div>
-    </a>
 </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    });
+</script>
 </body>
 </html>

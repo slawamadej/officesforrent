@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gabinety do wynajecia</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+<div class="offices">
+    <div th:each="office: ${offices}">
+        <div class = "office">
+            <img th:src="@{${'/img/'+ office.officeId + '/' +office.photos}}"/>
+            <div class="officesInfo">
+                <div>
+                    <h1 th:text="${office.name}"/>
+                    <p th:text="${office.description}"/>
+                    <table>
+                        <tr>
+                            <th>Price</th>
+                            <th><span th:text="${office.price}"/></th>
+                        </tr>
+                        <tr>
+                            <th>Capacity</th>
+                            <th><span th:text="${office.capacity}"/></th>
+                        </tr>
+                        <tr>
+                            <th>Area</th>
+                            <th><span th:text="${office.area}"/></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <form class="buttonform" th:action="'offices/'+${office.officeId}" method="get">
+                <button type="submit" >Accept office TODO</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

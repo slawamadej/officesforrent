@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.gabinetynagodziny.officesforrent.entity.User;
 import pl.gabinetynagodziny.officesforrent.repository.UserRepository;
-import pl.gabinetynagodziny.officesforrent.service.SignUpService;
+import pl.gabinetynagodziny.officesforrent.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
 public class SignUpController {
 
-    private SignUpService signUpService;
+    private UserService userService;
     private UserRepository userRepository;
 
     @Autowired
-    public SignUpController(SignUpService signUpService, UserRepository userRepository){
-        this.signUpService = signUpService;
+    public SignUpController(UserService userService, UserRepository userRepository){
+        this.userService = userService;
         this.userRepository = userRepository;
     }
 
@@ -31,18 +32,23 @@ public class SignUpController {
 
     @PostMapping("/sign_up")
     public String signUpPost(Model model, String username, String password, String email){
-        User userToSignUp = new User(username, password, email);
-        signUpService.signUpUser(userToSignUp);
+        User userToSignUp = new User();
+        userToSignUp.setPassword(password);
+        userToSignUp.setUsername(username);
+        userToSignUp.setEmail(email);
+        userToSignUp.setRoles(new ArrayList<>());
+        userService.signUpUser(userToSignUp);
         model.addAttribute("signUpRedirect",true);
         return "login";
     }
 
     @ResponseBody
     @GetMapping("/confirm_email")
-    public String confirmEmail(String token){
+    public String confirmEmail(@RequestParam("token") String token){
+        System.out.println("TOKEN: " + token);
         Optional<User> optionalUser = userRepository.findByToken(token);
 
-        if(!optionalUser.isPresent()){
+        if(optionalUser.isEmpty()){
             return "nie ma tokenu";
         }
         User user = optionalUser.get();

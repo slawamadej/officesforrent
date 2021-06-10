@@ -1,12 +1,15 @@
 package pl.gabinetynagodziny.officesforrent.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +30,7 @@ public class Reservation {
 
     private LocalDate reservationDate;
     private Integer reservationTime;
+
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
@@ -37,6 +41,15 @@ public class Reservation {
     public void doAcceptance(){
         this.acceptanceDate = LocalDateTime.now();
         this.accepted = true;
+    }
+
+    public Reservation(Office office, User user, String reservationDateString, String reservationTimeString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.office = office;
+        this.user = user;
+        this.reservationDate = LocalDate.parse(reservationDateString, formatter);
+        this.reservationTime = Integer.parseInt(reservationTimeString.substring(0,reservationTimeString.indexOf(":")));
+
     }
 
     @PrePersist

@@ -37,8 +37,10 @@ public class Office {
     @NotNull
     private Integer capacity;
     private Float area;
+    private Boolean accepted = false;
 
     private String photos;
+
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="userId", insertable = false, updatable = false)

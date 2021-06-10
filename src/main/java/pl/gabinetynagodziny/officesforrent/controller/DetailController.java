@@ -36,11 +36,10 @@ public class DetailController {
         return "adddetail";
     }
 
-    @ResponseBody
     @PostMapping("/add")
     public String addDetailPost(@Valid Detail detail, BindingResult result, Model model){
         Detail detailSaved = detailService.mergeDetail(detail);
-        return "dodano detail";
+        return "adddetail";
     }
 
    // @ResponseBody

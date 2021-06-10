@@ -20,6 +20,8 @@ import pl.gabinetynagodziny.officesforrent.util.FileUploadUtil;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,16 +50,15 @@ public class OfficeController {
 
     @GetMapping
     public String offices(Model model){
-        List<Office> offices = officeService.findAll();
+        List<Office> offices = officeService.findAllAccepted();
+        for (Office office : offices){
+            office.refreshOfficeScheduleMap();
+        }
         model.addAttribute("offices", offices);
         List<Detail> details = detailService.findAll();
-        List<Detail> furnishings = details.stream()
-                .filter(s -> s.getDetailType().equals(FURNISHINGS))
-                .collect(Collectors.toList());
         List<Detail> purposes = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
                 .collect(Collectors.toList());
-        model.addAttribute("furnishings", furnishings);
         model.addAttribute("purposes", purposes);
         return "offices";
     }
@@ -68,15 +69,11 @@ public class OfficeController {
         List<Office> offices = officeService.findByUserId(sessionUserId);
         model.addAttribute("offices", offices);
         List<Detail> details = detailService.findAll();
-        List<Detail> furnishings = details.stream()
-                .filter(s -> s.getDetailType().equals(FURNISHINGS))
-                .collect(Collectors.toList());
         List<Detail> purposes = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
                 .collect(Collectors.toList());
-        model.addAttribute("furnishings", furnishings);
         model.addAttribute("purposes", purposes);
-        return "offices";
+        return "officesmy";
     }
 
     @GetMapping("/add")
@@ -122,85 +119,27 @@ public class OfficeController {
     @GetMapping("/search")
     public String searchOffice(Model model, @RequestParam(required = false) Float priceMin
             , @RequestParam(required = false) Float priceMax
-            , @RequestParam(required = false) Integer capacityMin){
+            , @RequestParam(required = false) Integer capacityMin
+            , @RequestParam(required = false) Long purposeId){
+
 
         List<Office> offices =
-                officeService.findSearch(priceMin, priceMax, capacityMin);
+                officeService.findSearch(priceMin, priceMax, capacityMin, purposeId);
+        for (Office office : offices){
+            office.refreshOfficeScheduleMap();
+        }
         List<Detail> details = detailService.findAll();
-        List<Detail> furnishings = details.stream()
+        List<Detail> furnishingsL = details.stream()
                 .filter(s -> s.getDetailType().equals(FURNISHINGS))
                 .collect(Collectors.toList());
-        List<Detail> purposes = details.stream()
+        List<Detail> purposesL = details.stream()
                 .filter(s -> s.getDetailType().equals(PURPOSES))
                 .collect(Collectors.toList());
-        model.addAttribute("furnishings", furnishings);
-        model.addAttribute("purposes", purposes);
+        model.addAttribute("furnishings", furnishingsL);
+        model.addAttribute("purposes", purposesL);
         model.addAttribute("offices", offices);
 
         return "offices";
-    }
-
-    //SCHEDULE
-    @GetMapping("/{id}/schedule")
-    public String schedule(Model model, @PathVariable("id") Long id){
-        Optional<Office> optionalOffice = officeService.findByOfficeId(id);
-        List<DictionaryApp> dictionaries = dictionaryService.findAll();
-        List<DictionaryApp> scheduleTypes = dictionaries.stream()
-                .filter(s -> s.getDictCode().equals(Constans.SCHEDULE_TYPE))
-                .collect(Collectors.toList());
-
-        model.addAttribute("scheduleTypes", scheduleTypes);
-
-        List<DictionaryApp> dayOfTheWeek = dictionaries.stream()
-                .filter(s -> s.getDictCode().equals(Constans.DAYS_OF_WEEK))
-                .collect(Collectors.toList());
-
-        model.addAttribute("dayOfTheWeek", dayOfTheWeek);
-
-        if(optionalOffice.isEmpty()){
-        }
-
-        Office office = optionalOffice.get();
-        office.refreshOfficeScheduleMap();
-        System.out.println("Office schedule Map: " + office.getOfficeScheduleMap().size());
-        model.addAttribute("office", office);
-        return "schedules";
-    }
-
-    @GetMapping("/{id}/schedule/add")
-    public String scheduleAdd(Model model, @PathVariable("id") Long id){
-        Schedule schedule = new Schedule();
-        List<DictionaryApp> dictionaries = dictionaryService.findAll();
-        List<DictionaryApp> scheduleTypes = dictionaries.stream()
-                .filter(s -> s.getDictCode().equals(SCHEDULE_TYPE))
-                .collect(Collectors.toList());
-        List<DictionaryApp> days = dictionaries.stream()
-                .filter(s -> s.getDictCode().equals(DAYS_OF_WEEK))
-                .collect(Collectors.toList());
-
-        model.addAttribute("scheduleTypes", scheduleTypes);
-        model.addAttribute("days", days);
-        model.addAttribute("schedule", schedule);
-        model.addAttribute("officeId", id);
-        return "addschedule";
-    }
-
-    @PostMapping("/{id}/schedule/add")
-    public String scheduleAddPost(Model model, @PathVariable("id") Long id, Schedule schedule){
-        System.out.println("START TIME" + schedule.getStartTime());
-
-        Optional<Office> optionalOffice = officeService.findByOfficeId(id);
-        if(optionalOffice.isEmpty()){
-        }
-        Office office = optionalOffice.get();
-        schedule.setOffice(office);
-        Schedule scheduleSaved = scheduleService.mergeSchedule(schedule);
-
-        office.addSchedule(scheduleSaved);
-        office.refreshOfficeScheduleMap();
-
-        return "redirect:/offices/" + id + "/schedule";
-
     }
 
 }

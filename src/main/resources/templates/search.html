@@ -1,23 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div >
-    <form class="search form" action="offices/search" method="GET">
+    <form class="search form" th:action="@{/offices/search}" method="GET">
         <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
         <input type="number" name="priceMin" placeholder="Min Price">
         <input type="number" name="priceMax" placeholder="Max Price">
         <input type="number" name="capacityMin" placeholder="Min Capacity">
-        <input type="number" name="area" placeholder="Area">
-            <select  th:object="${furnishings}" name="furnishings">
+            <!--<select  th:object="${furnishings}" name="furnishings" multiple>
                 <option value="">Select Furnishing</option>
                 <option th:each="furnishing : ${furnishings}"
                         th:value="${furnishing.detailId}"
-                        th:text="${furnishing.code}+' : '+${furnishing.description}"></option>
+                        th:text="${furnishing.description}"></option>
             </select>
-            <select th:object="${purposes}" name="purposes">
-                <option value="">Select Purposes</option>
-                <option th:each="purpose : ${purposes}"
-                        th:value="${purpose.detailId}"
-                        th:text="${purpose.code}+' : '+${purpose.description}"></option>
-            </select>
+            <div th:each="furnishing : ${furnishings}">
+                <input type="checkbox" th:id="${furnishing.code}" name="${furnishing.code}">
+                <label th:for="${furnishing.code}" th:text="${furnishing.description}"></label>
+            </div>-->
+        <select th:object="${purposes}" name="purposeId">
+            <option value="">Select Purposes</option>
+            <option th:each="purpose : ${purposes}"
+                    th:value="${purpose.detailId}"
+                    th:text="${purpose.description}"></option>
+        </select>
 
         <input id = "searchButton" type="submit" value = "Search">
     </form>

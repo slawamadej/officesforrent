@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gabinety do wynajecia</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+<div th:insert="search.html :: div"></div>
+<div class="offices">
+    <div th:each="office: ${offices}">
+        <a style="display: block" class = "office" th:href="'offices/'+${office.officeId}">
+            <!--<img th:src="@{/img/image.jpeg}"/>-->
+            <img th:src="@{${'/img/'+ office.officeId + '/' +office.photos}}"/>
+            <div class="officesInfo">
+                <h1 th:text="${office.name}"/>
+                <p th:text="${office.description}"/>
+                <table>
+                    <tr>
+                        <th>Price</th>
+                        <th><span th:text="${office.price}"/></th>
+                    </tr>
+                    <tr>
+                        <th>Capacity</th>
+                        <th><span th:text="${office.capacity}"/></th>
+                    </tr>
+                    <tr>
+                        <th>Area</th>
+                        <th><span th:text="${office.area}"/></th>
+                    </tr>
+                </table>
+            </div>
+            <div class="officesButtons">
+                <form class="buttonform">
+                    <button th:href="@{'/offices/'+${office.officeId}+'schedule'}">Schedule</button>
+                </form>
+                <form class="buttonform" th:action="'/offices/'+${office.officeId}" method="get">
+                    <button th:href="'/offices/'+${office.officeId}">Edit</button>
+                </form>
+                <form class="buttonform" th:action="'/offices/'+${office.officeId}+'/remove'" method="delete">
+                    <button type="submit" >Remove</button>
+                </form>
+            </div>
+        </a>
+    </div>
+</div>
+</body>
+</html>

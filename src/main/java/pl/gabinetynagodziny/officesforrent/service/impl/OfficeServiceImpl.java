@@ -44,13 +44,23 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Office> findSearch(Float priceMin, Float priceMax, Integer capacityMin){
-        return officeRepository.findSearch(priceMin, priceMax, capacityMin);
+    public List<Office> findSearch(Float priceMin, Float priceMax, Integer capacityMin, Long purposeId){
+        return officeRepository.findSearch(priceMin, priceMax, capacityMin, purposeId);
     }
 
     @Override
     public Optional<Office> findByOfficeId(Long officeId) {
         return officeRepository.findById(officeId);
+    }
+
+    @Override
+    public List<Office> findAllAccepted() {
+        return officeRepository.findAllAccepted();
+    }
+
+    @Override
+    public List<Office> findAllNotAccepted() {
+        return officeRepository.findAllNotAccepted();
     }
 
 

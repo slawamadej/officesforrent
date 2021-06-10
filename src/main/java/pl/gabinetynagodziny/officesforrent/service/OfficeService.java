@@ -17,7 +17,11 @@ public interface OfficeService {
 
     List<Office> findByUserId(Long userId);
 
-    List<Office> findSearch(Float priceMin, Float priceMax, Integer capacityMin);
+    List<Office> findSearch(Float priceMin, Float priceMax, Integer capacityMin, Long purposeId);
 
     Optional<Office> findByOfficeId(Long officeId);
+
+    List<Office> findAllAccepted();
+
+    List<Office> findAllNotAccepted();
 }

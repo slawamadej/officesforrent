@@ -36,6 +36,10 @@ input, select, option {
     margin: 17px auto;
 }
 
+select[multiple]{
+    width: 430px;
+}
+
 select{
     color: grey;
 }
@@ -331,6 +335,11 @@ img {
     text-decoration: underline;
 }
 
+.officesInfo div{
+    float:left;
+    margin-left: 20px;
+}
+
 .scheduleRules {
     border: solid 1px grey;
     margin: 10px auto;
@@ -351,7 +360,7 @@ img {
     text-align: left;
 }
 
-.schedule{
+.schedule, .reservation{
     background-color: #fff;
     border: none;
     border-radius: 8px;
@@ -367,5 +376,3 @@ img {
     text-align:center;
     height: auto;
 }
-
-<img th:src="'@{/img/' + ${office.officeId} + '/' +${office.photos}"/>

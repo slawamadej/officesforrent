@@ -15,6 +15,10 @@
         <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div >
+        <input  type="textarea" th:field="*{description}" placeholder="Description">
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{name}"></div>
+    </div>
+    <div >
         <input  type="number" th:field="*{capacity}" placeholder="Office capacity">
         <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
     </div>
@@ -29,10 +33,6 @@
     <div >
         <input  type="file"  placeholder="Add photos" name="image" accept="image/png, image/jpeg">
     </div>
-    <!--<div >
-        <input  type="file" th:field="*{photos}" placeholder="Add photos" name="image" accept="image/png, image/jpeg">
-        <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
-    </div>-->
 
     <input type="submit" value = "Save office">
 </form>
