@@ -15,8 +15,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT r.* FROM reservations r WHERE r.accepted = true", nativeQuery = true)
     List<Reservation> findAllAccepted();
 
-    @Query(value = "SELECT r.* FROM reservations r WHERE r.accepted = false", nativeQuery = true)
-    List<Reservation> findAllNotAccepted();
+    @Query(value = "SELECT r.* FROM reservations r " +
+            "JOIN offices o ON o.office_id = r.office_office_id " +
+            "WHERE r.accepted = false " +
+            "AND o.user_id = :userId", nativeQuery = true)
+    List<Reservation> findAllByUserIdNotAccepted(@Param("userId") Long userId);
 
     @Query(value="SELECT r.* FROM reservations r WHERE r.user_user_id = :userId", nativeQuery = true)
     List<Reservation> findByUserId(@Param("userId") Long userId);

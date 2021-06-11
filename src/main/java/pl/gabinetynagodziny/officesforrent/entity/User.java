@@ -56,8 +56,8 @@ public class User implements UserDetails {
     @JoinTable(name="user_roles", joinColumns = @JoinColumn (name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="unit_id")
     private Unit unit;
 
     @OneToMany(fetch=FetchType.LAZY,
@@ -65,16 +65,6 @@ public class User implements UserDetails {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             orphanRemoval = true)
     private List<Reservation> reservations;
-
-    /*public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.roles = new HashSet<>();
-        this.Enabled = false;
-        this.Expired = false;
-        this.Locked = false;
-    }*/
 
     @PrePersist
     public void prePersist() {

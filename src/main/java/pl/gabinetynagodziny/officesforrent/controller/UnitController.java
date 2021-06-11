@@ -2,6 +2,8 @@ package pl.gabinetynagodziny.officesforrent.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +14,13 @@ import pl.gabinetynagodziny.officesforrent.entity.Unit;
 import pl.gabinetynagodziny.officesforrent.entity.User;
 import pl.gabinetynagodziny.officesforrent.repository.UnitRepository;
 import pl.gabinetynagodziny.officesforrent.service.UnitService;
+import pl.gabinetynagodziny.officesforrent.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Controller
@@ -24,54 +30,51 @@ public class UnitController {
     private final UnitService unitService;
     private final UnitRepository unitRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
 
-    public UnitController(UnitService unitService, UnitRepository unitRepository, ModelMapper modelMapper){
+    public UnitController(UnitService unitService, UnitRepository unitRepository, ModelMapper modelMapper
+            , UserService userService){
         this.unitService = unitService;
         this.unitRepository = unitRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     @GetMapping("/add")
     public String addUnit(Model model){
         Unit unit = new Unit();
-        model.addAttribute(unit);
+        model.addAttribute("unit", unit);
+
+        Map<String, String> unitType = new HashMap<>();
+        unitType.put("P", "Person");
+        unitType.put("C", "Company");
+
+        model.addAttribute("unitType", unitType);
         return "addunit";
     }
 
-    @ResponseBody
     @PostMapping("/add")
     public String addUnitPost(@Valid Unit unit, BindingResult bindingResult, HttpSession httpSession){
-        //userId z sesji musze jakos wyciagnac
-        //sprawdzic czy istnieje id, jak tak to nie dodawanie nowego tylko update
-
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors() || unit.getConsent() == false){
             return "addunit";
         }
 
-        Long sessionUserId = (Long) httpSession.getAttribute("userId");
-        unit.setUserId(sessionUserId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-        //jesli nie ma unitId!!!
-       /* Unit unitToAdd = new Unit();
-        unitToAdd.builder().consent(consent)
-                .type(type)
-                .firstName(firstName)
-                .name(name)
-                .webpage(webpage)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .taxNumber(taxNumber)
-                .build();*/
+        Optional<User> optionalUser = userService.findByUsername(currentPrincipalName);
+        if(optionalUser.isEmpty()){
+            return "error";}
 
-        //Unit unitToAdd = modelMapper.map(unitDto, Unit.class);
+        User loggedUser = optionalUser.get();
+        unit.setUser(loggedUser);
 
-        unitService.mergeUnit(unit);
+        Unit unitsaved = unitService.mergeUnit(unit);
+        loggedUser.setUnit(unitsaved);
 
-        //User userToSignUp = new User(username, password, email);
-        //signUpService.signUpUser(userToSignUp);
-        //modelAndView.setViewName("redirect:/login");
+        userService.mergeUser(loggedUser);
 
-        return "teoretycznie dodano profile";
+        return "redirect:/offices";
     }
 
 }

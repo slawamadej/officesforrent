@@ -33,19 +33,18 @@
                         </tr>
                     </table>
             </div>
+        </div>
             <div>
-                <h1 th:if="${office.officeScheduleMap.size()} > 0">Closest Available terms</h1>
                 <div class ="availableTerm" th:each="entry, iStat : ${office.officeScheduleMap}" th:unless="${iStat.index > 2}">
                     <p th:text="${entry.key}"></p>
                     <div th:each="item : ${entry.value}">
-                        <form  th:action="'offices/'+${office.officeId}+'/reservation/add/'+${entry.key}+'/'+${item}" method="get">
+                        <form  th:action="'offices/'+${office.officeId}+'/reservation/add/'+${entry.key}+'/'+${item}" method="post">
                             <button class="buttonTime" th:text="${item}" type="submit"></button>
                         </form>
                     </div>
                     </br>
                 </div>
             </div>
-        </div>
         <form class="buttonform" th:action="'offices/'+${office.officeId}" method="get">
             <button type="submit" >More details</button>
         </form>

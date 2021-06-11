@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservations</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:insert="menu.html :: div"></div>
+
+<div class="reservation">
+    <h2>Reservations</h2>
+    <table class = "scheduleRules">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Accepted</th>
+            <th>Office</th>
+            <th>Office Price</th>
+            <th></th>
+        </tr>
+        <tr th:each="reservation: ${reservations}">
+            <th th:text="${reservation.reservationDate}"></th>
+            <th th:text="${reservation.reservationTime}"></th>
+            <th th:text="${reservation.accepted}"></th>
+            <th th:text="${reservation.getOffice().officeId}"></th>
+            <th th:text="${reservation.getOffice().price}"></th>
+            <th>
+                <form class="buttonform" th:action="'reservations/'+${reservation.reservationId}+'/accept'" method="post">
+                    <button type="submit" >Accept reservation</button>
+                </form>
+            </th>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

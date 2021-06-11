@@ -7,6 +7,7 @@ import pl.gabinetynagodziny.officesforrent.repository.ReservationRepository;
 import pl.gabinetynagodziny.officesforrent.service.ReservationService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,7 +47,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findAllNotAccepted() {
-        return reservationRepository.findAllNotAccepted();
+    public List<Reservation> findAllByUserIdNotAccepted(Long userId) {
+        return reservationRepository.findAllByUserIdNotAccepted(userId);
+    }
+
+    @Override
+    public Optional<Reservation> findById(Long reservationId) {
+        return reservationRepository.findById(reservationId);
     }
 }

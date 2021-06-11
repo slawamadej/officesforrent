@@ -17,5 +17,7 @@ public interface ReservationService {
 
     List<Reservation> findAllAccepted();
 
-    List<Reservation> findAllNotAccepted();
+    List<Reservation> findAllByUserIdNotAccepted(Long userId);
+
+    Optional<Reservation> findById(Long reservationId);
 }

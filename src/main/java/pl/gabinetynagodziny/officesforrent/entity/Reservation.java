@@ -49,7 +49,6 @@ public class Reservation {
         this.user = user;
         this.reservationDate = LocalDate.parse(reservationDateString, formatter);
         this.reservationTime = Integer.parseInt(reservationTimeString.substring(0,reservationTimeString.indexOf(":")));
-
     }
 
     @PrePersist

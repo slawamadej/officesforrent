@@ -31,8 +31,8 @@
                     </table>
                 </div>
             </div>
-            <form class="buttonform" th:action="'offices/'+${office.officeId}" method="get">
-                <button type="submit" >Accept office TODO</button>
+            <form class="buttonform" th:action="'offices/'+${office.officeId}+'/accept'" method="post">
+                <button type="submit" >Accept office</button>
             </form>
         </div>
     </div>

@@ -25,10 +25,9 @@ public class Detail {
     private String code;
     private String description;
 
-    @ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name = "officeDetails", joinColumns = @JoinColumn(name = "detailId"), inverseJoinColumns = @JoinColumn(name = "officeId"))
     private List<Office> offices;
-
 
 
     //i moze tutaj powinnm dodac obiekt office, tak zeby uzyskac to polaczenie jak w officedetail

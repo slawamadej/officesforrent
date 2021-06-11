@@ -1,19 +1,15 @@
 package pl.gabinetynagodziny.officesforrent.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.gabinetynagodziny.officesforrent.entity.Detail;
-import pl.gabinetynagodziny.officesforrent.entity.DictionaryApp;
-import pl.gabinetynagodziny.officesforrent.entity.Office;
-import pl.gabinetynagodziny.officesforrent.entity.Schedule;
-import pl.gabinetynagodziny.officesforrent.service.DetailService;
-import pl.gabinetynagodziny.officesforrent.service.DictionaryService;
-import pl.gabinetynagodziny.officesforrent.service.OfficeService;
-import pl.gabinetynagodziny.officesforrent.service.ScheduleService;
+import pl.gabinetynagodziny.officesforrent.entity.*;
+import pl.gabinetynagodziny.officesforrent.service.*;
 import pl.gabinetynagodziny.officesforrent.util.Constans;
 import pl.gabinetynagodziny.officesforrent.util.FileUploadUtil;
 
@@ -22,6 +18,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,18 +31,16 @@ public class OfficeController {
     private final DetailService detailService;
     private final ScheduleService scheduleService;
     private final DictionaryService dictionaryService;
-
-    public static final String FURNISHINGS = "FURNISHINGS";
-    public static final String PURPOSES = "PURPOSES";
-    public static final String SCHEDULE_TYPE = "SCHEDULE_TYPE";
-    public static final String DAYS_OF_WEEK = "DAYS_OF_WEEK";
+    private final UserService userService;
 
     public OfficeController(OfficeService officeService, DetailService detailService
-            , DictionaryService dictionaryService, ScheduleService scheduleService){
+            , DictionaryService dictionaryService, ScheduleService scheduleService
+            ,UserService userService){
         this.officeService = officeService;
         this.detailService = detailService;
         this.dictionaryService = dictionaryService;
         this.scheduleService = scheduleService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -57,20 +52,29 @@ public class OfficeController {
         model.addAttribute("offices", offices);
         List<Detail> details = detailService.findAll();
         List<Detail> purposes = details.stream()
-                .filter(s -> s.getDetailType().equals(PURPOSES))
+                .filter(s -> s.getDetailType().equals(Constans.PURPOSES))
                 .collect(Collectors.toList());
         model.addAttribute("purposes", purposes);
         return "offices";
     }
 
     @GetMapping("/my")
-    public String officesMy(Model model, HttpSession httpSession){
-        Long sessionUserId = (Long) httpSession.getAttribute("userId");
-        List<Office> offices = officeService.findByUserId(sessionUserId);
+    public String officesMy(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        Optional<User> optionalUser = userService.findByUsername(currentPrincipalName);
+        if(optionalUser.isEmpty()){
+            return "error";}
+
+        User loggedUser = optionalUser.get();
+
+        List<Office> offices = officeService.findByUserId(loggedUser.getUserId());
+
         model.addAttribute("offices", offices);
         List<Detail> details = detailService.findAll();
         List<Detail> purposes = details.stream()
-                .filter(s -> s.getDetailType().equals(PURPOSES))
+                .filter(s -> s.getDetailType().equals(Constans.PURPOSES))
                 .collect(Collectors.toList());
         model.addAttribute("purposes", purposes);
         return "officesmy";
@@ -80,29 +84,49 @@ public class OfficeController {
     public String addOffice(Model model){
         Office office = new Office();
         model.addAttribute("office", office);
+
+        List<Detail> details = detailService.findAll();
+        List<Detail> purposesL = details.stream()
+                .filter(s -> s.getDetailType().equals(Constans.PURPOSES))
+                .collect(Collectors.toList());
+        model.addAttribute("purposes", purposesL);
+
         return "addoffice";
     }
 
     @PostMapping("/add")
-    public String addOfficePost(@Valid Office office, BindingResult result, Model model, HttpSession httpSession
-    ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
+    public String addOfficePost(@Valid Office office, BindingResult result, Model model, @RequestParam("image") MultipartFile multipartFile
+            , @RequestParam("purposeId") Long purposeId) throws IOException {
         if(result.hasErrors()){
             return "addoffice";
         }
+        System.out.println("purposeId: "+ purposeId);
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         office.setPhotos(fileName);
 
-        Long sessionUserId = (Long) httpSession.getAttribute("userId");
-        office.setUserId(sessionUserId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-        System.out.println("office/add sessionUserId: " + sessionUserId);
+        Optional<User> optionalUser = userService.findByUsername(currentPrincipalName);
+        if(optionalUser.isEmpty()){
+            return "error";}
+
+        User loggedUser = optionalUser.get();
+        office.setUserId(loggedUser.getUserId());
+
+        Optional<Detail> optionalDetail = detailService.findByDetailId(purposeId);
+        if(optionalDetail.isEmpty()){
+            return "error";}
+
+        if(office.getDetails() == null){
+            List<Detail> details = new ArrayList<>();
+            office.setDetails(details);
+        }
+            office.getDetails().add(optionalDetail.get());
 
         Office officeSaved = officeService.mergeOffice(office);
-
-        //String uploadDir = "user-photos/" + officeSaved.getOfficeId();
         String uploadDir = "src/main/resources/static/img/" + officeSaved.getOfficeId();
-        System.out.println("uploadDir" + uploadDir);
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "redirect:/offices/"+ officeSaved.getOfficeId();
     }
@@ -111,6 +135,7 @@ public class OfficeController {
     public String editOffice(Model model, @PathVariable("id") Long id){
         Optional<Office> optionalOffice = officeService.findByOfficeId(id);
         if(optionalOffice.isEmpty()){
+            return "error";
         }
         model.addAttribute("office", optionalOffice.get());
         return "addoffice";
@@ -130,16 +155,30 @@ public class OfficeController {
         }
         List<Detail> details = detailService.findAll();
         List<Detail> furnishingsL = details.stream()
-                .filter(s -> s.getDetailType().equals(FURNISHINGS))
+                .filter(s -> s.getDetailType().equals(Constans.FURNISHINGS))
                 .collect(Collectors.toList());
         List<Detail> purposesL = details.stream()
-                .filter(s -> s.getDetailType().equals(PURPOSES))
+                .filter(s -> s.getDetailType().equals(Constans.PURPOSES))
                 .collect(Collectors.toList());
         model.addAttribute("furnishings", furnishingsL);
         model.addAttribute("purposes", purposesL);
         model.addAttribute("offices", offices);
 
         return "offices";
+    }
+
+    @PostMapping("/{id}/accept")
+    public String acceptOffice(@PathVariable("id") Long id){
+        Optional<Office> optionalOffice = officeService.findByOfficeId(id);
+        if(optionalOffice.isEmpty()){
+            return "error";
+        }
+        Office officeToAccept = optionalOffice.get();
+        officeToAccept.doAcceptance();
+
+        officeService.mergeOffice(officeToAccept);
+
+        return "redirect:/notifications";
     }
 
 }

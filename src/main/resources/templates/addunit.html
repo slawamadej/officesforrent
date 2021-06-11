@@ -7,32 +7,28 @@
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<form action="/units/add"  method="POST">
-    <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<form class ="form" action="/units/add"  method="POST">
+    <!-- <input type="hidden" th:username="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="radio" id="person" name="type" checked>
     <label for="person">Person</label>
     <input type="radio" id="company" name="type">
-    <label for="company">Company</label>
+    <label for="company">Company</label>-->
 
+    <div th:each="type : ${unitType}">
+        <input type="radio" th:field="*{unit.type}" th:value="${type.key}">
+        <label th:for="${type.key}" th:text="${type.value}">nnn</label>
+    </div>
 
-    <!--   <label>First Name</label>
-   <div th:classappend="${#fields.hasErrors('firstName')} ? 'input-icon right' : ''">
-       <i th:if="${#fields.hasErrors('firstName')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
-       <input type="text" class="form-control" maxlength="32" th:field="*{firstName}" placeholder="First name"/>
-       <span th:if="${#fields.hasErrors('firstName')}" class="help-block" th:errors="*{firstName}"></span>
-   </div>-->
+    <input type="text" th:field="*{unit.firstName}" name="firstName" placeholder="Firstname">
+    <input type="text" th:field="*{unit.name}" name="name" placeholder="Name">
 
+    <input type="text" th:field="*{unit.webpage}" name="webPage" placeholder="Web page">
+    <input type="email" th:field="*{unit.email}" name="email" placeholder="Email">
 
-    <input type="text" name="firstName" placeholder="Firstname">
-    <input type="text" name="name" placeholder="Name">
+    <input type="text" th:field="*{unit.phoneNumber}" name="phoneNumber" placeholder="Phone Number">
+    <input type="text" th:field="*{unit.taxNumber}" name="taxNumber" placeholder="Tax Number">
 
-    <input type="text" name="webPage" placeholder="Web page">
-    <input type="email" name="email" placeholder="Email">
-
-    <input type="text" name="phoneNumber" placeholder="Phone Number">
-    <input type="text" name="taxNumber" placeholder="Tax Number">
-
-    <input type="checkbox" id="consent" name="consent" checked>
+    <input type="checkbox" th:field="*{unit.consent}" id="consent" name="consent" checked>
     <label for="consent">Consent agreement</label>
 
     <input type="submit" value = "Save profile">

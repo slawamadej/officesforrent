@@ -15,8 +15,8 @@
         <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div >
-        <input  type="textarea" th:field="*{description}" placeholder="Description">
-        <div th:if="${#fields.hasErrors('description')}" th:errors="*{name}"></div>
+        <input  type="text" th:field="*{description}" placeholder="Description">
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
     </div>
     <div >
         <input  type="number" th:field="*{capacity}" placeholder="Office capacity">
@@ -30,6 +30,12 @@
         <input  type="number" th:field="*{area}" placeholder="Office area">
         <div th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
     </div>
+    <select  name="purposeId" >
+        <option value="">Select Purposes</option>
+        <option th:each="purpose : ${purposes}"
+                th:value="${purpose.detailId}"
+                th:text="${purpose.description}"></option>
+    </select>
     <div >
         <input  type="file"  placeholder="Add photos" name="image" accept="image/png, image/jpeg">
     </div>

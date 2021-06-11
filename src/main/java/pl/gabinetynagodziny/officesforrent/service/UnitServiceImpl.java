@@ -18,7 +18,6 @@ public class UnitServiceImpl implements UnitService{
 
     @Override
     public Unit mergeUnit(Unit unit){
-        unit.setUserId((long) 1);
         Unit mergedUnit = unitRepository.save(unit);
         return mergedUnit;
     }

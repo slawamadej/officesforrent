@@ -24,7 +24,6 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long unitId;
 
-    private Long userId;
     private Boolean consent;
 
     private String type; //person or company

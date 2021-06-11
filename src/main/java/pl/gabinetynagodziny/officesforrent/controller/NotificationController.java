@@ -6,12 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.gabinetynagodziny.officesforrent.entity.Detail;
-import pl.gabinetynagodziny.officesforrent.entity.Office;
-import pl.gabinetynagodziny.officesforrent.entity.Role;
-import pl.gabinetynagodziny.officesforrent.entity.User;
+import pl.gabinetynagodziny.officesforrent.entity.*;
 import pl.gabinetynagodziny.officesforrent.service.DetailService;
 import pl.gabinetynagodziny.officesforrent.service.OfficeService;
+import pl.gabinetynagodziny.officesforrent.service.ReservationService;
 import pl.gabinetynagodziny.officesforrent.service.UserService;
 import pl.gabinetynagodziny.officesforrent.util.Constans;
 
@@ -27,11 +25,14 @@ public class NotificationController {
     private final UserService userService;
     private final OfficeService officeService;
     private final DetailService detailService;
+    private final ReservationService reservationService;
 
-    public NotificationController(UserService userService, OfficeService officeService, DetailService detailService){
+    public NotificationController(UserService userService, OfficeService officeService
+            , DetailService detailService, ReservationService reservationService){
         this.userService = userService;
         this.officeService = officeService;
         this.detailService = detailService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -58,8 +59,10 @@ public class NotificationController {
 
                 return "notificationsAdmin";
             }
+                List<Reservation> reservationNotAccepted = reservationService.findAllByUserIdNotAccepted(loggedUser.getUserId());
+                model.addAttribute("reservations", reservationNotAccepted);
+
                 return "notificationsUser";
-                //wziac reservacje do akceptacji
             }
         }
     }

@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import pl.gabinetynagodziny.officesforrent.entity.Role;
+import pl.gabinetynagodziny.officesforrent.entity.Unit;
 import pl.gabinetynagodziny.officesforrent.provider.mailer.RandomStringFactory;
 import pl.gabinetynagodziny.officesforrent.provider.mailer.SignUpMailer;
 import pl.gabinetynagodziny.officesforrent.entity.User;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         String token = RandomStringFactory.getRandomString(TOKEN_LENGTH);
         user.setToken(token);
-        Optional<Role> roleOptional = roleRepository.findByName(Constans.USER);
+        Optional<Role> roleOptional = roleRepository.findByName(Constans.ROLE_USER);
         if(roleOptional.isPresent()){
             user.getRoles().add(roleOptional.get());
         }
@@ -58,6 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User mergeUser(User user) {
+        return  userRepository.save(user);
     }
 
 

@@ -32,8 +32,8 @@
                 </table>
             </div>
             <div class="officesButtons">
-                <form class="buttonform">
-                    <button th:href="@{'/offices/'+${office.officeId}+'schedule'}">Schedule</button>
+                <form class="buttonform" th:action="@{'/offices/'+${office.officeId}+'/schedule'}" method="get">
+                    <button type="submit">Schedule</button>
                 </form>
                 <form class="buttonform" th:action="'/offices/'+${office.officeId}" method="get">
                     <button th:href="'/offices/'+${office.officeId}">Edit</button>

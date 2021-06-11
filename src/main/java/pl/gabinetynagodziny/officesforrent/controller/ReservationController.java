@@ -1,5 +1,7 @@
 package pl.gabinetynagodziny.officesforrent.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import pl.gabinetynagodziny.officesforrent.service.UserService;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,20 +37,32 @@ public class ReservationController {
         this.userService = userService;
     }
 
-    @GetMapping("/offices/{id}/reservation/add/{date}/{hour}")
+    @PostMapping("/offices/{id}/reservation/add/{date}/{hour}")
     public String addReservation(@PathVariable("id") Long id, @PathVariable("date") String date, @PathVariable("hour") String hour, HttpSession httpSession){
         Optional<Office> optionalOffice = officeService.findByOfficeId(id);
         if(optionalOffice.isEmpty()){
+            return "error";
         }
-        Long sessionUserId = (Long) httpSession.getAttribute("userId");
-        sessionUserId = 1L;
-        Optional<User> optionalUser = userService.findByUserId(sessionUserId);
-        if(optionalUser.isEmpty()){
-        }
+        Office office = optionalOffice.get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-        Reservation reservation = new Reservation(optionalOffice.get(), optionalUser.get(), date, hour);
+        Optional<User> optionalUser = userService.findByUsername(currentPrincipalName);
+        if(optionalUser.isEmpty()){
+            return "error";}
+
+        User loggedUser = optionalUser.get();
+
+        Reservation reservation = new Reservation(office, loggedUser, date, hour);
 
         reservationService.mergeReservation(reservation);
+
+        if(office.getReservations() == null){
+            List<Reservation> reservationList  = new ArrayList<>();
+            office.setReservations(reservationList);
+        }
+
+        office.getReservations().add(reservation);
 
         return "redirect:/reservations/my";
 
@@ -55,12 +70,32 @@ public class ReservationController {
 
     @GetMapping("/reservations/my")
     public String myReservations(Model model, HttpSession httpSession){
-        Long sessionUserId = (Long) httpSession.getAttribute("userId");
-        sessionUserId = 1L;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-        List<Reservation> reservations = reservationService.findByUserId(sessionUserId);
+        Optional<User> optionalUser = userService.findByUsername(currentPrincipalName);
+        if(optionalUser.isEmpty()){
+            return "error";}
+
+        User loggedUser = optionalUser.get();
+
+        List<Reservation> reservations = reservationService.findByUserId(loggedUser.getUserId());
         model.addAttribute("reservations", reservations);
 
         return "reservations";
+    }
+
+    @PostMapping("/reservations/{id}/accept")
+    public String acceptOffice(@PathVariable("id") Long id){
+        Optional<Reservation> optionalReservation = reservationService.findById(id);
+        if(optionalReservation.isEmpty()){
+            return "error";
+        }
+        Reservation reservationToAccept = optionalReservation.get();
+        reservationToAccept.doAcceptance();
+
+        reservationService.mergeReservation(reservationToAccept);
+
+        return "redirect:/notifications";
     }
 }

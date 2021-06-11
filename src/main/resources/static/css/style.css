@@ -311,7 +311,7 @@ img {
 
 .officesInfo{
     float: left;
-    width: 50%;
+    width: 30%;
     height: 180px;
     margin: 20px 0px;
 }
@@ -356,6 +356,7 @@ img {
 }
 
 .availableTerm{
+    float: left;
     margin-left: 20px;
     text-align: left;
 }
